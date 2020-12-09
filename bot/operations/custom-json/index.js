@@ -1,0 +1,24 @@
+const config = require('../../../common/config');
+const hideMarket = require('./hide-market');
+const registerOracle = require('./register-oracle');
+const reportOutcome = require('./report-outcome');
+
+const handlers = {
+  'hide-market': hideMarket,
+  'register-oracle': registerOracle,
+  'report-outcome': reportOutcome,
+};
+
+const fallback = () => { };
+
+const runner = (client, data) => {
+  if (data.id !== config.APP_ID) return;
+
+  const json = JSON.parse(data.json);
+
+  const handler = handlers[json.action] || fallback;
+
+  handler(client, { ...data, json });
+};
+
+module.exports = (client, data) => runner(client, data);

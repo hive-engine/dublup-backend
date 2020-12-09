@@ -1,0 +1,360 @@
+{
+  "trading-crypto-binary": [
+    {
+      "id": "trading-crypto-binary-1",
+      "question": "Will the price of [Token Pair] open at or above [Value] on [Day of Year], according to TradingView.com \"[Market Source]\"?",
+      "example": "Will the price of BTC/USD open at or above 8000 on December 31, 2020, according to TradingView.com \"BTCUSD (crypto - Coinbase)\"?",
+      "replaceable": "Will the price of [pair] open at or above [price] on [openDate], according to TradingView.com \"[source]\"?"
+    },
+    {
+      "id": "trading-crypto-binary-2",
+      "question": "Will the price of [Token Pair], exceed [Value] anytime between the open of [Day of Year] and close of [Day of Year], according to TradingView.com \"[Market Source]\"?",
+      "example": "Will the price of BTC/USD exceed 8000 anytime between the open of September 1, 2020 and close of December 31, 2020, according to TradingView.com \"BTCUSD (crypto - Coinbase)\"?",
+      "replaceable": "Will the price of [pair], exceed [price] anytime between the open of [openDate] and close of [closeDate], according to TradingView.com \"[source]\"?"
+    }
+  ],
+  "trading-stocks-binary": [
+    {
+      "id": "trading-stocks-binary-1",
+      "question": "Will the price of [Stock] open at or above [Value] on [Day of Year], according to TradingView.com \"[Market Source]\"?",
+      "example": "Will the price of NASDAQ-TSLA open at or above 600 on December 31, 2020, according to TradingView.com \"TSLA (stock - NASDAQ)\"?",
+      "replaceable": "Will the price of [pair] open at or above [price] on [openDate], according to TradingView.com \"[source]\"?"
+    },
+    {
+      "id": "trading-stocks-binary-2",
+      "question": "Will the price of [Stock], exceed [Value] anytime between the open of [Day of Year] and close of [Day of Year], according to TradingView.com \"[Market Source]\"?",
+      "example": "Will the price of NASDAQ-TSLA exceed 600 anytime between the open of September 1, 2020 and close of December 31, 2020, according to TradingView.com \"TSLA (stock - NASDAQ)\"?",
+      "replaceable": "Will the price of [pair], exceed [price] anytime between the open of [openDate] and close of [closeDate], according to TradingView.com \"[source]\"?"
+    }
+  ],
+  "trading-commodities-binary": [
+    {
+      "id": "trading-commodities-binary-1",
+      "question": "Will the price of [Commodity] open at or above [Value] on [Day of Year], according to TradingView.com \"[Market Source]\"?",
+      "example": "Will the price of XAUUSD open at or above 2000 on December 31, 2020, according to TradingView.com \"XAUUSD (cfd - OANDA)\"?",
+      "replaceable": "Will the price of [pair] open at or above [price] on [openDate], according to TradingView.com \"[source]\"?"
+    },
+    {
+      "id": "trading-commodities-binary-2",
+      "question": "Will the price of [Commodity], exceed [Value] anytime between the open of [Day of Year] and close of [Day of Year], according to TradingView.com \"[Market Source]\"?",
+      "example": "Will the price of XAUUSD exceed 2000 anytime between the open of September 1, 2020 and close of December 31, 2020, according to TradingView.com \"XAUUSD (cfd - OANDA)\"?",
+      "replaceable": "Will the price of [pair], exceed [price] anytime between the open of [openDate] and close of [closeDate], according to TradingView.com \"[source]\"?"
+    }
+  ],
+  "sports-americanfootball-binary": [
+    {
+      "id": "sports-americanfootball-binary-1",
+      "question": "NFL [Week #]: Will the [Team A] win vs. the [Team B]?",
+      "example": "NFL Week 1: Will the NY Giants win vs. the New England Patriots?",
+      "replaceable": "NFL [week]: Will the [teamA] win vs. the [teamB]?"
+    },
+    {
+      "id": "sports-americanfootball-binary-2",
+      "question": "NFL [Week #]: Will the [Team A] win vs. the [Team B] by [Whole #] or more points?",
+      "example": "NFL Week 1: Will the NY Giants win vs. the New England Patriots by 3 or more points?",
+      "replaceable": "NFL [week]: Will the [teamA] win vs. the [teamB] by [points] or more points?"
+    },
+    {
+      "id": "sports-americanfootball-binary-3",
+      "question": "NFL [Week #]: Will the [Team A] & [Team B] score [Whole #] or more combined points?",
+      "example": "NFL Week 1: Will the NY Giants & the New England Patriots score 44 or more combined points?",
+      "replaceable": "NFL [week]: Will the [teamA] & [teamB] score [points] or more combined points?"
+    },
+    {
+      "id": "sports-americanfootball-binary-4",
+      "question": "NFL: Will the [Team] have [Whole #] or more regular season wins in [Year]?",
+      "example": "NFL: Will the Dallas Cowboys have 9 or more regular season wins in 2020?",
+      "replaceable": "NFL: Will the [team] have [wins] or more regular season wins in [year]?"
+    },
+    {
+      "id": "sports-americanfootball-binary-5",
+      "question": "NFL: Will the [Team] win SuperBowl [Numeral]?",
+      "example": "NFL: Will the NY Giants win Superbowl LIV (54th)",
+      "replaceable": "NFL: Will the [team] win SuperBowl [numeral]?"
+    },
+    {
+      "id": "sports-americanfootball-binary-6",
+      "question": "NFL: Will [Single Player's Name] win the [Year] [Select Award] award?",
+      "example": "NFL: Will Patrick Mahomes win the 2020 MVP award?",
+      "replaceable": "NFL: Will [player] win the [year] [award] award?"
+    }
+  ],
+  "sports-americanfootball-categorical": [
+    {
+      "id": "sports-americanfootball-categorical-1",
+      "question": "[Week #]: Which NFL Team will win: [Team A] vs. [Team B]?",
+      "example": "Week 1: Which NFL Team will win: NY Giants vs. New England Patriots?",
+      "replaceable": "[week]: Which NFL Team will win: [teamA] vs. [teamB]?"
+    },
+    {
+      "id": "sports-americanfootball-categorical-2",
+      "question": "NFL (Point Spread) [Week #]: [Team A] to win by more than [Whole #].5 points over [Team B]?",
+      "example": "NFL (Point Spread) Week 1: Seattle Seahawks to win by more than 10.5 points over Dallas Cowboys?",
+      "replaceable": "NFL (Point Spread) [week]: [teamA] to win by more than [points] points over [teamB]?"
+    }
+  ],
+  "sports-baseball-binary": [
+    {
+      "id": "sports-baseball-binary-1",
+      "question": "MLB: Will the [Team] win the [Year] [Event]?",
+      "example": "MLB: Will the NY Yankees win the 2020 World Series?",
+      "replaceable": "MLB: Will the [team] win the [year] [event]?"
+    }
+  ],
+  "sports-mma-categorical": [
+    {
+      "id": "sports-mma-categorical-1",
+      "question": "MMA: [Fighter A] vs. [Fighter B]; Who will win?",
+      "example": "MMA: Donald Cerrone vs. Conor McGregor; Who will win?",
+      "replaceable": "MMA: [fighterA] vs. [fighterB]; Who will win?"
+    },
+    {
+      "id": "sports-mma-categorical-2",
+      "question": "MMA (O/U): [Fighter A] vs. [Fighter B]; Over/Under [Round #].5 Rounds?",
+      "example": "MMA (O/U): Donald Cerrone vs. Conor McGregor; Over/Under 1.5 Rounds?",
+      "replaceable": "MMA (O/U): [fighterA] vs. [fighterB]; Over/Under [rounds] Rounds?"
+    },
+    {
+      "id": "sports-mma-categorical-3",
+      "question": "MMA: [Fighter A] vs. [Fighter B]; Method of victory?",
+      "example": "MMA: Donald Cerrone vs. Conor McGregor; Method of victory?",
+      "replaceable": "MMA: [fighterA] vs. [fighterB]; Method of victory?"
+    },
+    {
+      "id": "sports-mma-categorical-4",
+      "question": "MMA: [Fighter A] vs. [Fighter B]; How will the fight end?",
+      "example": "MMA UFC: Donald Cerrone vs. Conor McGregor; How will the fight end?",
+      "replaceable": "MMA: [fighterA] vs. [fighterB]; How will the fight end?"
+    },
+    {
+      "id": "sports-mma-categorical-5",
+      "question": "MMA: [Fighter A] vs. [Fighter B]; What round will the fight end?",
+      "example": "MMA: Donald Cerrone vs. Conor McGregor; What round will the fight end?",
+      "replaceable": "MMA: [fighterA] vs. [fighterB]; What round will the fight end?"
+    }
+  ],
+  "economics-statistics-categorical": [
+    {
+      "id": "economics-statistics-categorical-1",
+      "question": "Will the seasonally adjusted national Unemployment Rate for [Month] [Year] be [Number]% or higher according to the US Bureau Labor of Statistics?",
+      "example": "Will the seasonally adjusted national Unemployment Rate for September 2020 be 5% or higher according to the US Bureau Labor of Statistics?",
+      "replaceable": "Will the seasonally adjusted national Unemployment Rate for [month] [year] be [percentage]% or higher according to the US Bureau Labor of Statistics?"
+    }
+  ],
+  "entertainment-awards-binary": [
+    {
+      "id": "entertainment-awards-binary-1",
+      "question": "Will [Single Person's Name] host the [Year] [Event]?",
+      "example": "Will Billy Crystal host the 2019 Academy Awards?",
+      "replaceable": "Will [person] host the [year] [event]?"
+    },
+    {
+      "id": "entertainment-awards-binary-2",
+      "question": "Will [Single Person or Single Group or Movie Title] win an award for [Award] at the [Year] [Event]?",
+      "example": "Will Leonardo DiCaprio win an award for Best Actor at the 2016 Academy Awards?",
+      "replaceable": "Will [person] win an award for [award] at the [year] [event]?"
+    }
+  ],
+  "entertainment-awards-categorical": [
+    {
+      "id": "entertainment-awards-categorical-1",
+      "question": "Who will host the [Year] [Event]?",
+      "example": "Who wll host the 2020 Emmy Awards?",
+      "replaceable": "Who will host the [year] [event]?"
+    },
+    {
+      "id": "entertainment-awards-categorical-2",
+      "question": "Who will win [Award] in the [Year] [Event]?",
+      "example": "Who will win Best Pop Vocal Album in the 2020 Grammy Awards?",
+      "replaceable": "Who will win [award] in the [year] [event]?"
+    }
+  ],
+  "entertainment-socialmedia-binary": [
+    {
+      "id": "entertainment-socialmedia-binary-1",
+      "question": "[Social Media]: Will [Username] have [Number] [Amount Unit] or more followers on [Day of Year], according to www.socialblade.com?",
+      "example": "Twitter: Will @elonmusk have 50 million or more followers on September 12, 2020, according to www.socialblade.com?",
+      "replaceable": "[socialmedia]: Will [username] have [followers] [unit] or more followers on [date], according to www.socialblade.com?"
+    }
+  ],
+  "entertainment-tvmovies-binary": [
+    {
+      "id": "entertainment-tvmovies-binary-1",
+      "question": "Will the total gross for [Individual Movie Title] be $[Total Gross sales] USD or more on domestic opening weekend of [Opening day] in the US, according to www.boxofficemojo.com?",
+      "example": "Will the total gross for Avengers: Endgame gross 350 million USD or more on domestic opening weekend of April 22, 2019 in the US, according to www.boxofficemojo.com?",
+      "replaceable": "Will the total gross for [movie] be $[sales] USD or more on domestic opening weekend of [date] in the US, according to www.boxofficemojo.com?"
+    }
+  ],
+  "medical-general-binary": [
+    {
+      "id": "medical-general-binary-1",
+      "question": "Will there be [Whole #] or more total confirmed [Case/Death] Coronavirus (Covid-19) in [Countries] by [Day of Year] according to https://www.worldometers.info/coronavirus/?",
+      "example": "Will there be 3000000 or more total confirmed cases of Coronavirus (Covid-19) in the world by July 15, 2020 according to https://www.worldometers.info/coronavirus/?",
+      "replaceable": "Will there be [amount] or more total confirmed [amountType] Coronavirus (Covid-19) in [country] by [date] according to https://www.worldometers.info/coronavirus/?"
+    }
+  ],
+  "politics-uspolitics-binary": [
+    {
+      "id": "politics-uspolitics-binary-1",
+      "question": "Will a woman be elected U.S. President in the [Year] Presidential election?",
+      "example": "Will a woman be elected U.S. President in the 2024 Presidential election?",
+      "replaceable": "Will a woman be elected U.S. President in the [year] Presidential election?"
+    },
+    {
+      "id": "politics-uspolitics-binary-2",
+      "question": "Will [Single Candidates Name] run for [Office] by [Day of Year]?",
+      "example": "Will Oprah Winfrey run for U.S. President by December 31, 2024?",
+      "replaceable": "Will [candidate] run for [office] by [date]?"
+    }
+  ],
+  "politics-uspolitics-categorical": [
+    {
+      "id": "politics-uspolitics-categorical-1",
+      "question": "Who will win the [Year] U.S. Presidential election?",
+      "example": "Who will win the 2020 U.S. Presidential election?",
+      "replaceable": "Who will win the [year] U.S. Presidential election?"
+    }
+  ],
+  "politics-world-binary": [
+    {
+      "id": "politics-world-binary-1",
+      "question": "Will [Single Person's Name] be [Position] of [Country] on [Day of Year]?",
+      "example": "Will Kim Jong Un be Supreme Leader of North Korea on December 31, 2020?",
+      "replaceable": "Will [person] be [position] of [country] on [date]?"
+    }
+  ],
+  "politics-world-categorical": [
+    {
+      "id": "politics-world-categorical-1",
+      "question": "Who will be [Position] of [Country] by [Day of Year]?",
+      "example": "Who be Supreme Leader of North Korea on December 31, 2020?",
+      "replaceable": "Who will be [position] of [country] by [date]?"
+    }
+  ],
+  "sports-basketball-binary": [
+    {
+      "id": "sports-basketball-binary-1",
+      "question": "[NBA/WNBA/NCAA]: Will the [Team A] win vs. the [Team B]?",
+      "example": "NBA: Will the Los Angeles Lakers win vs. the Golden State Warriors?",
+      "replaceable": "[tournament]: Will the [teamA] win vs. the [teamB]?"
+    }
+  ],
+  "sports-basketball-categorical": [
+    {
+      "id": "sports-basketball-categorical-1",
+      "question": "[NBA/WNBA/NCAA]: Which team will win: [Team A] vs. [Team B]?",
+      "example": "NBA: Which Team will win: Brooklyn Nets vs. NY Knicks?",
+      "replaceable": "[tournament]: Which team will win: [teamA] vs. [teamB]?"
+    }
+  ],
+  "sports-boxing-categorical": [
+    {
+      "id": "sports-boxing-categorical-1",
+      "question": "Boxing: [Fighter A] vs. [Fighter B]; Who will win?",
+      "example": "Boxing: Robert Helenius vs. Adam Kownacki; Who will win?",
+      "replaceable": "Boxing: [fighterA] vs. [fighterB]; Who will win?"
+    }
+  ],
+  "sports-carracing-categorical": [
+    {
+      "id": "sports-carracing-categorical-1",
+      "question": "NASCAR [Year] [Event]: Winner?",
+      "example": "NASCAR 2020 Daytona 500: Winner?",
+      "replaceable": "NASCAR [year] [event]: Winner?"
+    }
+  ],
+  "sports-footballsoccer-categorical": [
+    {
+      "id": "sports-footballsoccer-categorical-1",
+      "question": "[Men's/Women's] [Event]: Which team will win: [Team A] vs. [Team B]?",
+      "example": "Men's World Cup: Which team will win: Argentina vs. Brazil?",
+      "replaceable": "[eventType] [event]: Which team will win: [teamA] vs. [teamB]?"
+    }
+  ],
+  "sports-golf-binary": [
+    {
+      "id": "sports-golf-binary-1",
+      "question": "[PGA/LPGA/Euro Tour]: Will [Single Player's Name] win the [Year] [Event]?",
+      "example": "PGA: Will Tiger Woods win the 2020 PGA Championship?",
+      "replaceable": "[tour]: Will [player] win the [year] [event]?"
+    }
+  ],
+  "sports-golf-categorical": [
+    {
+      "id": "sports-golf-categorical-1",
+      "question": "[PGA/LPGA/Euro Tour]: Which golfer will win the [Year] [Event]?",
+      "example": "PGA: Which golfer will win the 2020 PGA Championship?",
+      "replaceable": "[tour]: Which golfer will win the [year] [event]?"
+    }
+  ],
+  "sports-hockey-binary": [
+    {
+      "id": "sports-hockey-binary-1",
+      "question": "NHL: Will the [Team A] win vs. the [Team B]?",
+      "example": "NHL: Will the St Louis Blues win vs. the Dallas Stars?",
+      "replaceable": "NHL: Will the [teamA] win vs. the [teamB]?"
+    }
+  ],
+  "sports-hockey-categorical": [
+    {
+      "id": "sports-hockey-categorical-1",
+      "question": "NHL: Which team will win: [Team A] vs. [Team B]?",
+      "example": "NHL: Which Team will win: NY Rangers vs. NJ Devils?",
+      "replaceable": "NHL: Which team will win: [teamA] vs. [teamB]?"
+    }
+  ],
+  "sports-horseracing-binary": [
+    {
+      "id": "sports-horseracing-binary-1",
+      "question": "Will [Single Horse's Name] win the [Year] [Event]?",
+      "example": "Will American Pharoah win the 2021 Triple Crown?",
+      "replaceable": "Will [horse] win the [year] [event]?"
+    }
+  ],
+  "sports-horseracing-categorical": [
+    {
+      "id": "sports-horseracing-categorical-1",
+      "question": "Which horse will win the [Year] [Event]?",
+      "example": "Which horse will win the 2020 Kentucky Derby?",
+      "replaceable": "Which horse will win the [year] [event]?"
+    }
+  ],
+  "sports-olympics-binary": [
+    {
+      "id": "sports-olympics-binary-1",
+      "question": "Olympics [Sport]: Will [Country] win a gold medal in [Event] at the [Year] [Summer/Winter] Olympics?",
+      "example": "Olympics Swimming: Will Norway win a gold medal in 50m Freestyle (Men/Women) at the 2020 Summer Olympics?",
+      "replaceable": "Olympics [sport]: Will [country] win a gold medal in [event] at the [year] [season] Olympics?"
+    },
+    {
+      "id": "sports-olympics-binary-2",
+      "question": "Olympics [Sport]: Will [Country] win more [Medal type] medals than [Country] at the [Year] [Summer/Winter] Olympics?",
+      "example": "Olympics Swimming: Will Norway win more gold medals than Belgium at the 2020 Summer Olympics?",
+      "replaceable": "Olympics [sport]: Will [countryA] win more [medalType] medals than [countryB] at the [year] [season] Olympics?"
+    }
+  ],
+  "sports-olympics-categorical": [
+    {
+      "id": "sports-olympics-categorical-1",
+      "question": "Olympics: Which country will win the most [Medal type] medals at the [Year] [Summer/Winter] Olympics?",
+      "example": "Olympics: Which country will win the most Gold medals at the 2020 Summer Olympics?",
+      "replaceable": "Olympics: Which country will win the most [medalType] medals at the [year] [season] Olympics?"
+    }
+  ],
+  "sports-tenis-binary": [
+    {
+      "id": "sports-tenis-binary-1",
+      "question": "[Men's/Women's/Mixed] [Singles/Doubles] Tennis: Will [Player(s) Name] win the [Year] [Event]?",
+      "example": "Olympics: Which country will win the most Gold medals at the 2020 Summer Olympics?",
+      "replaceable": "[teamType] [gameFormat] Tennis: Will [players] win the [year] [event]?"
+    }
+  ],
+  "sports-tenis-categorical": [
+    {
+      "id": "sports-tenis-categorical-1",
+      "question": "[Men's/Women's/Mixed] [Singles/Doubles] Tennis: Which player(s) will win the [Year] [Event]?",
+      "example": "Olympics: Which country will win the most Gold medals at the 2020 Summer Olympics?",
+      "replaceable": "[teamType] [gameFormat] Tennis: Which player(s) will win the [year] [event]?"
+    }
+  ]
+}

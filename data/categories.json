@@ -1,0 +1,175 @@
+{
+  "Trading": {
+    "icon": "activity",
+    "sub_category": {
+      "Crypto": {
+        "icon": "terminal",
+        "types": [
+          "binary"
+        ]
+      },
+      "Stocks": {
+        "icon": "terminal",
+        "types": [
+          "binary"
+        ]
+      },
+      "Commodities": {
+        "icon": "terminal",
+        "types": [
+          "binary"
+        ]
+      }
+    }
+  },
+  "Economics": {
+    "icon": "trending-up",
+    "sub_category": {
+      "Statistics": {
+        "icon": "terminal",
+        "types": [
+          "categorical"
+        ]
+      }
+    }
+  },
+  "Entertainment": {
+    "icon": "play",
+    "sub_category": {
+      "Awards": {
+        "icon": "terminal",
+        "types": [
+          "binary",
+          "categorical"
+        ]
+      },
+      "Social Media": {
+        "icon": "terminal",
+        "types": [
+          "binary"
+        ]
+      },
+      "TV & Movies": {
+        "icon": "terminal",
+        "types": [
+          "binary"
+        ]
+      }
+    }
+  },
+  "Medical": {
+    "icon": "scissors",
+    "sub_category": {
+      "General": {
+        "icon": "terminal",
+        "types": [
+          "binary"
+        ]
+      }
+    }
+  },
+  "Politics": {
+    "icon": "home",
+    "sub_category": {
+      "US Politics": {
+        "icon": "terminal",
+        "types": [
+          "binary",
+          "categorical"
+        ]
+      },
+      "World": {
+        "icon": "terminal",
+        "types": [
+          "binary",
+          "categorical"
+        ]
+      }
+    }
+  },
+  "Sports": {
+    "icon": "life-buoy",
+    "sub_category": {
+      "American Football": {
+        "icon": "terminal",
+        "types": [
+          "binary",
+          "categorical"
+        ]
+      },
+      "Baseball": {
+        "icon": "terminal",
+        "types": [
+          "binary",
+          "categorical"
+        ]
+      },
+      "Basketball": {
+        "icon": "terminal",
+        "types": [
+          "binary",
+          "categorical"
+        ]
+      },
+      "Boxing": {
+        "icon": "terminal",
+        "types": [
+          "categorical"
+        ]
+      },
+      "Car Racing": {
+        "icon": "terminal",
+        "types": [
+          "categorical"
+        ]
+      },
+      "Football (Soccer)": {
+        "icon": "terminal",
+        "types": [
+          "categorical"
+        ]
+      },
+      "Golf": {
+        "icon": "terminal",
+        "types": [
+          "binary",
+          "categorical"
+        ]
+      },
+      "Hockey": {
+        "icon": "terminal",
+        "types": [
+          "binary",
+          "categorical"
+        ]
+      },
+      "Horse Racing": {
+        "icon": "terminal",
+        "types": [
+          "binary",
+          "categorical"
+        ]
+      },
+      "MMA": {
+        "icon": "terminal",
+        "types": [
+          "categorical"
+        ]
+      },
+      "Olympics": {
+        "icon": "terminal",
+        "types": [
+          "binary",
+          "categorical"
+        ]
+      },
+      "Tenis": {
+        "icon": "terminal",
+        "types": [
+          "binary",
+          "categorical"
+        ]
+      }
+    }
+  }
+}
