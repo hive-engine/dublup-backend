@@ -1,11 +1,17 @@
 const logger = require('../../../common/logger');
 const createMarket = require('./create-market');
 const buyShares = require('./buy-shares');
+const creatorReward = require('./creator-reward');
+const oracleReward = require('./oracle-reward');
+const reward = require('./reward');
 const { parseJSON } = require('../../helpers');
 
 const handlers = {
   create: createMarket,
   buy: buyShares,
+  'creator-reward': creatorReward,
+  'oracle-reward': oracleReward,
+  reward,
 };
 
 const fallback = () => { };
@@ -16,11 +22,17 @@ module.exports = async (trx, scClient) => {
   try {
     const jsonMemo = parseJSON(payload.memo);
 
-    if (!jsonMemo || !jsonMemo.action) {
+    if (!jsonMemo) {
       return;
     }
 
-    const handler = handlers[jsonMemo.action] || fallback;
+    let handler = fallback;
+
+    if (jsonMemo.action) {
+      handler = handlers[jsonMemo.action];
+    } else if (jsonMemo.type) {
+      handler = handlers[jsonMemo.type];
+    }
 
     handler({ ...trx, payload: { ...payload, memo: jsonMemo } }, scClient);
   } catch (e) {

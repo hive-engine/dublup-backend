@@ -59,6 +59,7 @@ module.exports = async (trx) => {
         properties: {
           market: market._id,
           outcome: memo.payload.outcome,
+          uid: `${trxId}-${id}`,
         },
       });
     }
@@ -68,14 +69,14 @@ module.exports = async (trx) => {
     for (let i = 0; i < issueChunks.length; i += 1) {
       try {
         await issueMultiple(issueChunks[i]);
-        await sleep(200);
+        await sleep(3000);
 
         broadcastToUser(username, 'buy-shares', JSON.stringify({
           success: true,
           message: `You have been issued ${issueChunks[i].length} shares. Outcome: ${memo.payload.outcome} Market: ${market._id}`,
         }));
       } catch (e) {
-        logger.error(`Failed to bradcast NFT issuance.  User: ${username} MKT: ${market._id} TX: ${trxId}`, issueChunks[i]);
+        logger.error(`Failed to bradcast NFT issuance. Message: ${e.message}  User: ${username} MKT: ${market._id} TX: ${trxId}`, issueChunks[i]);
       }
     }
 

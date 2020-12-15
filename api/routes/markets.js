@@ -7,6 +7,11 @@ module.exports = [
     method: 'GET',
     path: '/markets',
     options: {
+      auth: {
+        strategies: ['jwt'],
+        mode: 'try',
+        payload: false,
+      },
       validate: {
         query: Joi.object({
           creator: Joi.string().min(3).max(16),
@@ -15,7 +20,7 @@ module.exports = [
           page: Joi.number().min(1).default(1),
           limit: Joi.number().min(1).max(1000).default(50),
           status: Joi.number().min(0).max(5).default(1),
-          sort_by: Joi.string().valid('liquidity', 'newest', 'oldest', 'ending_soon').default('liquidity').optional(),
+          sort_by: Joi.string().valid('liquidity', 'newest', 'oldest', 'ending_soon').default('liquidity'),
           oracle: Joi.string().min(3).max(16),
         }).options({ stripUnknown: true }),
       },
@@ -30,7 +35,11 @@ module.exports = [
       let match = {};
       match.status = status;
 
-      if (oracle) match = { ...match, $expr: { $lte: [`$reported_outcomes.${oracle}`, null] } };
+      if (oracle && request.auth
+        && request.auth.credentials
+        && request.auth.credentials.sub === oracle) {
+        match = { ...match, oracles: oracle, $expr: { $lte: [`$reported_outcomes.${oracle}`, null] } };
+      }
 
       const sort = {};
 

@@ -72,6 +72,9 @@ const MarketSchema = new mongoose.Schema({
   rules: {
     type: Array,
   },
+  oracles: [{
+    type: String,
+  }],
   reported_outcomes: Object,
   expires_at: Date,
   __v: { type: Number, select: false },

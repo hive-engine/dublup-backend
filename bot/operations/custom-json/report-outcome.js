@@ -18,7 +18,10 @@ module.exports = async (client, data) => {
         decodedPayload = parseJSON(decodedPayload);
 
         if (decodedPayload.market && decodedPayload.outcome) { // Payload is in correct format
-          const market = await Market.findOne({ _id: decodedPayload.market }).lean();
+          const market = await Market.findOne({
+            _id: decodedPayload.market,
+            oracles: username,
+          }).lean();
 
           if (market && market.status === 2) { // Market is in reporting state
             if (Object.keys(market.possible_outcomes).includes(decodedPayload.outcome) || decodedPayload.outcome === 'Invalid') {
@@ -55,6 +58,8 @@ module.exports = async (client, data) => {
                 broadcastToUser(username, 'report-outcome', JSON.stringify({ success: true }));
               }
             }
+          } else {
+            broadcastToUser(username, 'report-outcome', JSON.stringify({ success: false }));
           }
         }
       } else {
