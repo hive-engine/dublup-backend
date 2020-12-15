@@ -1,46 +1,59 @@
 const Sidechain = require('../common/Sidechain');
 const logger = require('../common/logger');
 const config = require('../common/config');
+const DB = require('../common/db');
 const Stream = require('./Stream');
+const State = require('../common/state');
 const operations = require('./operations');
 const { getClient, BlockchainMode } = require('../common/chain');
 const { blockProcessor } = require('./sidechain');
 const { settleReportedMarkets, updateMarketsStatus, updateOracleStakes } = require('./modules');
 
-require('../common/db');
+const state = new State();
+
+state.createTable();
 
 const client = getClient();
 
-const streamOptions = {
-  // from: 48819202,
-  // to: 48819202,
-  mode: BlockchainMode.Latest,
-};
-
-const stream = new Stream(client, streamOptions);
-
-stream.start();
-
-stream.on('custom_json', (data) => operations.customJson(client, data));
-
-stream.on('error', async (error) => {
-  logger.error(error.message);
-});
-
-const SidechainClient = new Sidechain({
-  chain: config.CHAIN_NAME,
-  blockchain: `${config.SIDECHAIN_RPC}/blockchain`,
-  contract: `${config.SIDECHAIN_RPC}/contracts`,
-  blockProcessor,
-});
+let hiveStream;
+let SidechainClient;
 
 const main = async () => {
-  let blockNumber = 0;
+  const lastHiveBlock = await state.loadState('hive');
+  const lastHEBlock = await state.loadState('hive-engine');
 
-  const blockInfo = await SidechainClient.getLatestBlockInfo();
-  blockNumber = blockInfo.blockNumber;
+  const streamOptions = {
+    from: lastHiveBlock === 0 ? undefined : lastHiveBlock + 1,
+    mode: BlockchainMode.Latest,
+  };
 
-  SidechainClient.streamBlocks(blockNumber);
+  hiveStream = new Stream(client, streamOptions);
+
+  hiveStream.start();
+
+  hiveStream.on('custom_json', (data) => operations.customJson(client, data));
+
+  hiveStream.on('block', (block) => state.saveState({ chain: 'hive', block }));
+
+  hiveStream.on('error', async (error) => {
+    logger.error(error.message);
+  });
+
+  SidechainClient = new Sidechain({
+    chain: config.CHAIN_NAME,
+    blockchain: `${config.SIDECHAIN_RPC}/blockchain`,
+    contract: `${config.SIDECHAIN_RPC}/contracts`,
+    blockProcessor,
+  });
+
+  let blockNumber = lastHEBlock + 1;
+
+  if (blockNumber <= 1) {
+    const blockInfo = await SidechainClient.getLatestBlockInfo();
+    blockNumber = blockInfo.blockNumber;
+  }
+
+  SidechainClient.streamBlocks(blockNumber, null, 1000, state);
 
   await updateMarketsStatus();
 
@@ -50,3 +63,15 @@ const main = async () => {
 };
 
 main();
+
+process.on('SIGINT', async () => {
+  SidechainClient.stopStream();
+  hiveStream.stop();
+
+  setTimeout(async () => {
+    await state.destroy();
+    await DB.close();
+
+    process.exit(0);
+  }, 30 * 1000);
+});

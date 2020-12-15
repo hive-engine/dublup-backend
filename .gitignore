@@ -121,3 +121,6 @@ dist
 
 # pm2
 ecosystem.config.js
+
+# Sqlite DB
+*.db

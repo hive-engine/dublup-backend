@@ -2,7 +2,7 @@ const dhive = require('@hiveio/dhive');
 const config = require('./config');
 
 const clientOptions = {
-  failoverThreshold: 0,
+  failoverThreshold: 20,
   consoleOnFailover: true,
   timeout: 20 * 1000,
 };

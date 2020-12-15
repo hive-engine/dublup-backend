@@ -33,6 +33,8 @@ class Stream extends EventEmiter {
             });
           }
         }
+
+        this.emit('block', Number.parseInt(data.block_id.slice(0, 8), 16));
       });
 
       this.stream.on('error', (e) => this.emit('error', e));

@@ -18,6 +18,8 @@ class Sidechain {
     }
 
     this.PROCESSOR = blockProcessor;
+
+    this.shouldStream = false;
   }
 
   static async send(rpc, request) {
@@ -119,27 +121,33 @@ class Sidechain {
     return processedTransactions;
   }
 
-  async streamBlocks(startBlock, endBlock = null, ts = 1000) {
+  async streamBlocks(startBlock, endBlock = null, ts = 1000, ...args) {
+    if (this.shouldStream) return;
+
     try {
       const res = await this.getBlockInfo(startBlock);
       let nextBlock = startBlock;
 
       if (res !== null) {
         const response = this.processResponses(res);
-        this.PROCESSOR(response, this);
+        this.PROCESSOR(response, this, ...args);
         nextBlock += 1;
       }
 
       if (endBlock === null || (endBlock && nextBlock <= endBlock)) {
         setTimeout(() => {
-          this.streamBlocks(nextBlock, endBlock, ts);
+          this.streamBlocks(nextBlock, endBlock, ts, ...args);
         }, ts);
       }
     } catch (err) {
       setTimeout(() => {
-        this.streamBlocks(startBlock, endBlock, ts);
+        this.streamBlocks(startBlock, endBlock, ts, ...args);
       }, ts);
     }
+  }
+
+  stopStream() {
+    this.shouldStream = true;
   }
 
   getTransactionInfo(txid) {

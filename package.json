@@ -26,13 +26,15 @@
     "joi": "^17.3.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.2",
+    "sqlite3": "^5.0.0",
     "ulid": "^2.3.0",
     "winston": "^3.3.3",
     "ws": "^7.4.0"
   },
   "nodemonConfig": {
     "ignore": [
-      "playground"
+      "playground",
+      "*.db"
     ]
   }
 }
