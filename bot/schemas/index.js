@@ -595,8 +595,7 @@ module.exports = {
     ...common,
     socialmedia: Joi.string().valid('Twitter', 'Instagram').required(),
     username: Joi.string().min(3).required(),
-    followers: Joi.number().required(),
-    unit: Joi.string().valid('Thousand', 'Million', 'Billion').required(),
+    followers: Joi.number().min(1).required(),
     date: Joi.date().required(),
     expiryDate: Joi.date().valid(Joi.ref('date', { adjust: (v) => addDays(new Date(v), 2) })).required().messages({ 'any.only': '"expiryDate" must be 2 days after the "date"' }),
   }),
@@ -612,7 +611,7 @@ module.exports = {
   'medical-general-binary-1': Joi.object().keys({
     ...common,
     amount: Joi.number().min(1).required(),
-    amountType: Joi.string().valid('Cases of', 'Deaths of').required(),
+    amountType: Joi.string().valid('Cases of', 'Deaths from').required(),
     country: Joi.string().required(),
     date: Joi.date().required(),
     expiryDate: Joi.date().greater(Joi.ref('date')).required(),

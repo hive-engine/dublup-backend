@@ -172,9 +172,9 @@
   "entertainment-socialmedia-binary": [
     {
       "id": "entertainment-socialmedia-binary-1",
-      "question": "[Social Media]: Will [Username] have [Number] [Amount Unit] or more followers on [Day of Year], according to www.socialblade.com?",
+      "question": "[Social Media]: Will [Username] have [Number] or more followers on [Day of Year], according to www.socialblade.com?",
       "example": "Twitter: Will @elonmusk have 50 million or more followers on September 12, 2020, according to www.socialblade.com?",
-      "replaceable": "[socialmedia]: Will [username] have [followers] [unit] or more followers on [date], according to www.socialblade.com?"
+      "replaceable": "[socialmedia]: Will [username] have [followers] or more followers on [date], according to www.socialblade.com?"
     }
   ],
   "entertainment-tvmovies-binary": [

@@ -1,5 +1,6 @@
 const marketRoutes = require('./markets');
 const settingsRoutes = require('./settings');
+const transactionsRoutes = require('./transactions');
 const usersRoutes = require('./users');
 
 const { broadcastToUser } = require('../../common/websocket');
@@ -28,5 +29,6 @@ module.exports = [
   ],
   ...marketRoutes,
   ...settingsRoutes,
+  ...transactionsRoutes,
   ...usersRoutes,
 ];
