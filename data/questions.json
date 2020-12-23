@@ -341,17 +341,17 @@
       "replaceable": "Olympics: Which country will win the most [medalType] medals at the [year] [season] Olympics?"
     }
   ],
-  "sports-tenis-binary": [
+  "sports-tennis-binary": [
     {
-      "id": "sports-tenis-binary-1",
+      "id": "sports-tennis-binary-1",
       "question": "[Men's/Women's/Mixed] [Singles/Doubles] Tennis: Will [Player(s) Name] win the [Year] [Event]?",
       "example": "Olympics: Which country will win the most Gold medals at the 2020 Summer Olympics?",
       "replaceable": "[teamType] [gameFormat] Tennis: Will [players] win the [year] [event]?"
     }
   ],
-  "sports-tenis-categorical": [
+  "sports-tennis-categorical": [
     {
-      "id": "sports-tenis-categorical-1",
+      "id": "sports-tennis-categorical-1",
       "question": "[Men's/Women's/Mixed] [Singles/Doubles] Tennis: Which player(s) will win the [Year] [Event]?",
       "example": "Olympics: Which country will win the most Gold medals at the 2020 Summer Olympics?",
       "replaceable": "[teamType] [gameFormat] Tennis: Which player(s) will win the [year] [event]?"

@@ -495,7 +495,7 @@ module.exports = {
     outcomes: Joi.array().items(Joi.string().required(), Joi.string().required(), Joi.string().valid('Other Country').required()).unique().required(),
   }),
 
-  'sports-tenis-binary-1': Joi.object().keys({
+  'sports-tennis-binary-1': Joi.object().keys({
     ...common,
     gameFormat: Joi.string().valid('Singles', 'Doubles').required(),
     teamType: Joi.alternatives().conditional('gameFormat', [
@@ -512,7 +512,7 @@ module.exports = {
     expiryDate: Joi.date().greater('now').required(),
   }),
 
-  'sports-tenis-categorical-1': Joi.object().keys({
+  'sports-tennis-categorical-1': Joi.object().keys({
     ...common,
     gameFormat: Joi.string().valid('Singles', 'Doubles').required(),
     teamType: Joi.alternatives().conditional('gameFormat', [
