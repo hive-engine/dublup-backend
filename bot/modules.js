@@ -96,19 +96,21 @@ const selectRandomOracles = async () => {
 
 const updateMarketsStatus = async () => {
   try {
-    const markets = await Market.find({ status: { $lt: 5 }, expires_at: { $lte: new Date() } });
+    const markets = await Market.find({ $and: [{ status: { $gt: 0 } }, { status: { $lt: 5 } }] });
 
     for (let i = 0; i < markets.length; i += 1) {
       const market = markets[i];
 
-      if (market.status === 1) {
+      if (market.status === 1 && Date.now() >= new Date(market.closes_at).getTime()) {
+        market.status = 2; // market closed
+      } else if (market.status === 2 && Date.now() >= new Date(market.expires_at).getTime()) {
         market.oracles = await selectRandomOracles();
-        market.status = 2;
-      } else if (market.status === 2
+        market.status = 3; // market reporting
+      } else if (market.status === 3
         && market.reported_outcomes
         && Object.keys(market.reported_outcomes).length >= config.ORACLE_REQUIRED
         && differenceInDays(new Date(), new Date(market.expires_at)) >= config.REPORTING_DURATION) {
-        market.status = 3;
+        market.status = 4; // market reported
       }
 
       await market.save();
@@ -298,7 +300,7 @@ const updateOracleReputation = async (reportedOutcomes, winningOutcome) => {
 
 const settleReportedMarkets = async () => {
   try {
-    const markets = await Market.find({ status: 3 });
+    const markets = await Market.find({ status: 4 });
 
     for (let i = 0; i < markets.length; i += 1) {
       const market = markets[i];

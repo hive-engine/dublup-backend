@@ -19,7 +19,7 @@ module.exports = [
           sub_category: Joi.string(),
           page: Joi.number().min(1).default(1),
           limit: Joi.number().min(1).max(1000).default(50),
-          status: Joi.number().min(0).max(5).default(1),
+          status: Joi.number().min(0).max(5),
           sort_by: Joi.string().valid('liquidity', 'newest', 'oldest', 'ending_soon').default('liquidity'),
           oracle: Joi.string().min(3).max(16),
         }).options({ stripUnknown: true }),
@@ -33,7 +33,12 @@ module.exports = [
       const skip = (page - 1) * limit;
 
       let match = {};
-      match.status = status;
+
+      if (status) {
+        match.status = status;
+      } else {
+        match = { ...match, $or: [{ status: 1 }, { status: 2 }] };
+      }
 
       if (oracle && request.auth
         && request.auth.credentials
@@ -75,6 +80,7 @@ module.exports = [
               type: 1,
               expires_at: 1,
               created_at: 1,
+              closes_at: 1,
               share_price: 1,
               liquidity: 1,
               rules: 1,
@@ -130,6 +136,7 @@ module.exports = [
         type: 1,
         expires_at: 1,
         created_at: 1,
+        closes_at: 1,
         share_price: 1,
         liquidity: 1,
         template: 1,
@@ -183,6 +190,7 @@ module.exports = [
                 type: 1,
                 expires_at: 1,
                 created_at: 1,
+                closes_at: 1,
                 share_price: 1,
                 liquidity: 1,
                 relevance: 1,

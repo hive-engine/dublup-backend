@@ -100,6 +100,7 @@ module.exports = async (trx) => {
         symbol: config.CURRENCY,
       },
       possible_outcomes: possibelOutcomes,
+      closes_at: value.closeDate,
       expires_at: value.expiryDate,
     };
 

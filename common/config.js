@@ -15,7 +15,7 @@ module.exports = {
   SIDECHAIN_ID: 'ssc-testnet-reaz',
   SIDECHAIN_RPC: 'https://packmanager.dtools.dev/rpc', // 'https://api.hive-engine.com/rpc',
   NFT_ISSUE_FEE_SYMBOL: 'BEE',
-  NFT_SYMBOL: 'PREDICTDEV', // PREDICT
+  NFT_SYMBOL: 'PREDICT',
   CURRENCY: 'PAL',
   MARKET_FEE: 300, // 3%
   CREATION_FEE: 100,

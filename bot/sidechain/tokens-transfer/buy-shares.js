@@ -19,34 +19,68 @@ module.exports = async (trx) => {
   try {
     const receivedAmount = Number(quantity);
 
+    let errorMessage = '';
+
     if (symbol !== config.CURRENCY) {
-      return refundToken(username, quantity, symbol, `Unsupported symbol. Please send ${config.CURRENCY}.`);
+      errorMessage = `Unsupported symbol. Please send ${config.CURRENCY}.`;
+
+      broadcastToUser(username, 'buy-shares', JSON.stringify({ success: false, message: errorMessage }));
+
+      return refundToken(username, quantity, symbol, errorMessage);
     }
 
     if (!memo || !memo.payload.market || !memo.payload.quantity || !memo.payload.outcome) {
-      return refundToken(username, quantity, symbol, 'Invalid buy action payload.');
+      errorMessage = 'Invalid buy action payload.';
+
+      broadcastToUser(username, 'buy-shares', JSON.stringify({ success: false, message: errorMessage }));
+
+      return refundToken(username, quantity, symbol, errorMessage);
     }
 
     const numberOfShares = parseFloat(memo.payload.quantity);
 
     if (!Number.isInteger(numberOfShares) || numberOfShares < 0) {
-      return refundToken(username, quantity, symbol, 'Invalid buy action payload. Quantity should be a whole number.');
+      errorMessage = 'Invalid buy action payload. Quantity should be a whole number.';
+
+      broadcastToUser(username, 'buy-shares', JSON.stringify({ success: false, message: errorMessage }));
+
+      return refundToken(username, quantity, symbol, errorMessage);
     }
 
-    const market = await Market.findOne({ _id: memo.payload.market, status: 1 });
+    const market = await Market.findOne({ _id: memo.payload.market });
 
     if (!market) {
-      return refundToken(username, quantity, symbol, 'Market not found.');
+      errorMessage = 'Market not found.';
+
+      broadcastToUser(username, 'buy-shares', JSON.stringify({ success: false, message: errorMessage }));
+
+      return refundToken(username, quantity, symbol, errorMessage);
+    }
+
+    if (market.status !== 1 || Date.now() >= new Date(market.closes_at).getTime()) {
+      errorMessage = 'Market is not open.';
+
+      broadcastToUser(username, 'buy-shares', JSON.stringify({ success: false, message: errorMessage }));
+
+      return refundToken(username, quantity, symbol, errorMessage);
     }
 
     if (!Object.keys(market.possible_outcomes).includes(memo.payload.outcome)) {
-      return refundToken(username, quantity, symbol, 'Invalid buy action payload. Unknown outcome.');
+      errorMessage = 'Invalid buy action payload. Unknown outcome.';
+
+      broadcastToUser(username, 'buy-shares', JSON.stringify({ success: false, message: errorMessage }));
+
+      return refundToken(username, quantity, symbol, errorMessage);
     }
 
     const totalPrice = market.share_price.amount * numberOfShares;
 
     if (totalPrice > receivedAmount) {
-      return refundToken(username, quantity, symbol, `Insufficient amount sent. Please send at least ${totalPrice} ${market.share_price.symbol}.`);
+      errorMessage = `Insufficient amount sent. Please send at least ${totalPrice} ${market.share_price.symbol}.`;
+
+      broadcastToUser(username, 'buy-shares', JSON.stringify({ success: false, message: errorMessage }));
+
+      return refundToken(username, quantity, symbol, errorMessage);
     }
 
     const nftInstances = [];

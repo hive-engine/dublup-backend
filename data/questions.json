@@ -4,13 +4,13 @@
       "id": "trading-crypto-binary-1",
       "question": "Will the price of [Token Pair] open at or above [Value] on [Day of Year], according to TradingView.com \"[Market Source]\"?",
       "example": "Will the price of BTC/USD open at or above 8000 on December 31, 2020, according to TradingView.com \"BTCUSD (crypto - Coinbase)\"?",
-      "replaceable": "Will the price of [pair] open at or above [price] on [openDate], according to TradingView.com \"[source]\"?"
+      "replaceable": "Will the price of [pair] open at or above [price] on [startDate], according to TradingView.com \"[source]\"?"
     },
     {
       "id": "trading-crypto-binary-2",
       "question": "Will the price of [Token Pair], exceed [Value] anytime between the open of [Day of Year] and close of [Day of Year], according to TradingView.com \"[Market Source]\"?",
       "example": "Will the price of BTC/USD exceed 8000 anytime between the open of September 1, 2020 and close of December 31, 2020, according to TradingView.com \"BTCUSD (crypto - Coinbase)\"?",
-      "replaceable": "Will the price of [pair], exceed [price] anytime between the open of [openDate] and close of [closeDate], according to TradingView.com \"[source]\"?"
+      "replaceable": "Will the price of [pair], exceed [price] anytime between the open of [startDate] and close of [endDate], according to TradingView.com \"[source]\"?"
     }
   ],
   "trading-stocks-binary": [
@@ -18,13 +18,13 @@
       "id": "trading-stocks-binary-1",
       "question": "Will the price of [Stock] open at or above [Value] on [Day of Year], according to TradingView.com \"[Market Source]\"?",
       "example": "Will the price of NASDAQ-TSLA open at or above 600 on December 31, 2020, according to TradingView.com \"TSLA (stock - NASDAQ)\"?",
-      "replaceable": "Will the price of [pair] open at or above [price] on [openDate], according to TradingView.com \"[source]\"?"
+      "replaceable": "Will the price of [pair] open at or above [price] on [startDate], according to TradingView.com \"[source]\"?"
     },
     {
       "id": "trading-stocks-binary-2",
       "question": "Will the price of [Stock], exceed [Value] anytime between the open of [Day of Year] and close of [Day of Year], according to TradingView.com \"[Market Source]\"?",
       "example": "Will the price of NASDAQ-TSLA exceed 600 anytime between the open of September 1, 2020 and close of December 31, 2020, according to TradingView.com \"TSLA (stock - NASDAQ)\"?",
-      "replaceable": "Will the price of [pair], exceed [price] anytime between the open of [openDate] and close of [closeDate], according to TradingView.com \"[source]\"?"
+      "replaceable": "Will the price of [pair], exceed [price] anytime between the open of [startDate] and close of [endDate], according to TradingView.com \"[source]\"?"
     }
   ],
   "trading-commodities-binary": [
@@ -32,13 +32,13 @@
       "id": "trading-commodities-binary-1",
       "question": "Will the price of [Commodity] open at or above [Value] on [Day of Year], according to TradingView.com \"[Market Source]\"?",
       "example": "Will the price of XAUUSD open at or above 2000 on December 31, 2020, according to TradingView.com \"XAUUSD (cfd - OANDA)\"?",
-      "replaceable": "Will the price of [pair] open at or above [price] on [openDate], according to TradingView.com \"[source]\"?"
+      "replaceable": "Will the price of [pair] open at or above [price] on [startDate], according to TradingView.com \"[source]\"?"
     },
     {
       "id": "trading-commodities-binary-2",
       "question": "Will the price of [Commodity], exceed [Value] anytime between the open of [Day of Year] and close of [Day of Year], according to TradingView.com \"[Market Source]\"?",
       "example": "Will the price of XAUUSD exceed 2000 anytime between the open of September 1, 2020 and close of December 31, 2020, according to TradingView.com \"XAUUSD (cfd - OANDA)\"?",
-      "replaceable": "Will the price of [pair], exceed [price] anytime between the open of [openDate] and close of [closeDate], according to TradingView.com \"[source]\"?"
+      "replaceable": "Will the price of [pair], exceed [price] anytime between the open of [startDate] and close of [endDate], according to TradingView.com \"[source]\"?"
     }
   ],
   "sports-americanfootball-binary": [

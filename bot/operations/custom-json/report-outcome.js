@@ -23,7 +23,7 @@ module.exports = async (client, data) => {
             oracles: username,
           }).lean();
 
-          if (market && market.status === 2) { // Market is in reporting state
+          if (market && market.status === 3) { // Market is in reporting state
             if (Object.keys(market.possible_outcomes).includes(decodedPayload.outcome) || decodedPayload.outcome === 'Invalid') {
               if (!market.reported_outcomes) {
                 market.reported_outcomes = {};
@@ -60,10 +60,12 @@ module.exports = async (client, data) => {
             }
           } else {
             broadcastToUser(username, 'report-outcome', JSON.stringify({ success: false }));
+            logger.error(`Failed to process reported outcome. User: ${username} TX: ${data.trx_id} Message: Market is not in reporting.`, data);
           }
         }
       } else {
         broadcastToUser(username, 'report-outcome', JSON.stringify({ success: false }));
+        logger.error(`Failed to process reported outcome. User: ${username} TX: ${data.trx_id} Message: User might not be an orcale or does not have the rep.`, data);
       }
     } catch (e) {
       broadcastToUser(username, 'report-outcome', JSON.stringify({ success: false }));

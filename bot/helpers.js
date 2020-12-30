@@ -64,7 +64,7 @@ const generateQuestion = (data) => {
   }
 
   return question.replaceable.replace(/\[(\w+)\]/g, (_, p) => {
-    if (['openDate', 'startDate', 'closeDate', 'date'].includes(p)) {
+    if (['startDate', 'endDate', 'date'].includes(p)) {
       return format(new Date(data[p]), 'MMMM dd, yyyy');
     }
 

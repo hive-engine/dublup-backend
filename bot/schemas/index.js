@@ -1,5 +1,7 @@
 const Joi = require('joi');
-const { addDays, addHours } = require('date-fns');
+const {
+  addDays, addHours, addMonths, lastDayOfMonth,
+} = require('date-fns');
 const questionCategories = require('../../data/categories.json');
 
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -29,15 +31,17 @@ module.exports = {
         is: 'categorical',
         then: Joi.required(),
       }),
-    expiryDate: Joi.date().required(),
+    closeDate: Joi.date().greater('now').max(Joi.ref('expiryDate')).required(),
+    expiryDate: Joi.date().greater('now').required(),
   }),
 
   'trading-crypto-binary-1': Joi.object().keys({
     ...common,
     pair: Joi.string().valid('BTC-USD', 'BTC-EUR', 'BTC-USDT', 'ETH-USD', 'ETH-EUR', 'ETH-USDT', 'HIVE-USD', 'HIVE-USDT').required(),
     price: Joi.number().min(0.001).required(),
-    openDate: Joi.date().required(),
-    expiryDate: Joi.date().valid(Joi.ref('openDate', { adjust: (v) => addDays(new Date(v), 1) })).required().messages({ 'any.only': '"expiryDate" must be 1 day after the "openDate"' }),
+    startDate: Joi.date().required(),
+    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
+    expiryDate: Joi.date().valid(Joi.ref('startDate', { adjust: (v) => addDays(new Date(v), 1) })).required().messages({ 'any.only': '"expiryDate" must be 1 day after the "startDate"' }),
     source: Joi.alternatives().conditional('pair', {
       switch: [
         { is: 'HIVE-USD', then: Joi.string().valid('HIVEUSD (crypto - Bittrex)') },
@@ -58,9 +62,10 @@ module.exports = {
     ...common,
     pair: Joi.string().valid('BTC-USD', 'BTC-EUR', 'BTC-USDT', 'ETH-USD', 'ETH-EUR', 'ETH-USDT', 'HIVE-USD', 'HIVE-USDT').required(),
     price: Joi.number().min(0.001).required(),
-    openDate: Joi.date().required(),
-    closeDate: Joi.date().required(),
-    expiryDate: Joi.date().valid(Joi.ref('closeDate', { adjust: (v) => addDays(new Date(v), 1) })).required().messages({ 'any.only': '"expiryDate" must be 1 day after the "closeDate"' }),
+    startDate: Joi.date().required(),
+    endDate: Joi.date().required(),
+    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
+    expiryDate: Joi.date().valid(Joi.ref('endDate', { adjust: (v) => addDays(new Date(v), 1) })).required().messages({ 'any.only': '"expiryDate" must be 1 day after the "endDate"' }),
     source: Joi.alternatives().conditional('pair', {
       switch: [
         { is: 'HIVE-USD', then: Joi.string().valid('HIVEUSD (crypto - Bittrex)') },
@@ -81,8 +86,9 @@ module.exports = {
     ...common,
     pair: Joi.string().valid('NASDAQ-GOOG', 'NASDAQ-AAPL', 'NASDAQ-TSLA').required(),
     price: Joi.number().min(0.001).required(),
-    openDate: Joi.date().required(),
-    expiryDate: Joi.date().valid(Joi.ref('openDate', { adjust: (v) => addDays(new Date(v), 1) })).required().messages({ 'any.only': '"expiryDate" must be 1 day after the "openDate"' }),
+    startDate: Joi.date().required(),
+    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
+    expiryDate: Joi.date().valid(Joi.ref('startDate', { adjust: (v) => addDays(new Date(v), 1) })).required().messages({ 'any.only': '"expiryDate" must be 1 day after the "startDate"' }),
     source: Joi.alternatives().conditional('pair', {
       switch: [
         { is: 'NASDAQ-GOOG', then: Joi.string().valid('GOOG (stock - NASDAQ)') },
@@ -96,9 +102,10 @@ module.exports = {
     ...common,
     pair: Joi.string().valid('NASDAQ-GOOG', 'NASDAQ-AAPL', 'NASDAQ-TSLA').required(),
     price: Joi.number().min(0.001).required(),
-    openDate: Joi.date().required(),
-    closeDate: Joi.date().required(),
-    expiryDate: Joi.date().valid(Joi.ref('closeDate', { adjust: (v) => addDays(new Date(v), 1) })).required().messages({ 'any.only': '"expiryDate" must be 1 day after the "closeDate"' }),
+    startDate: Joi.date().required(),
+    endDate: Joi.date().required(),
+    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
+    expiryDate: Joi.date().valid(Joi.ref('endDate', { adjust: (v) => addDays(new Date(v), 1) })).required().messages({ 'any.only': '"expiryDate" must be 1 day after the "endDate"' }),
     source: Joi.alternatives().conditional('pair', {
       switch: [
         { is: 'NASDAQ-GOOG', then: Joi.string().valid('GOOG (stock - NASDAQ)') },
@@ -112,8 +119,9 @@ module.exports = {
     ...common,
     pair: Joi.string().valid('XAU-USD', 'XAG-USD').required(),
     price: Joi.number().min(0.001).required(),
-    openDate: Joi.date().required(),
-    expiryDate: Joi.date().valid(Joi.ref('openDate', { adjust: (v) => addDays(new Date(v), 1) })).required().messages({ 'any.only': '"expiryDate" must be 1 day after the "openDate"' }),
+    startDate: Joi.date().required(),
+    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
+    expiryDate: Joi.date().valid(Joi.ref('startDate', { adjust: (v) => addDays(new Date(v), 1) })).required().messages({ 'any.only': '"expiryDate" must be 1 day after the "startDate"' }),
     source: Joi.alternatives().conditional('pair', {
       switch: [
         { is: 'XAU-USD', then: Joi.string().valid('XAUUSD (cfd - OANDA)', 'XAUUSD (cfd - ICE)', 'XAUUSD (cfd - FOREX.com)') },
@@ -126,9 +134,10 @@ module.exports = {
     ...common,
     pair: Joi.string().valid('XAU-USD', 'XAG-USD').required(),
     price: Joi.number().min(0.001).required(),
-    openDate: Joi.date().required(),
-    closeDate: Joi.date().required(),
-    expiryDate: Joi.date().valid(Joi.ref('closeDate', { adjust: (v) => addDays(new Date(v), 1) })).required().messages({ 'any.only': '"expiryDate" must be 1 day after the "closeDate"' }),
+    startDate: Joi.date().required(),
+    endDate: Joi.date().required(),
+    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
+    expiryDate: Joi.date().valid(Joi.ref('endDate', { adjust: (v) => addDays(new Date(v), 1) })).required().messages({ 'any.only': '"expiryDate" must be 1 day after the "endDate"' }),
     source: Joi.alternatives().conditional('pair', {
       switch: [
         { is: 'XAU-USD', then: Joi.string().valid('XAUUSD (cfd - OANDA)', 'XAUUSD (cfd - ICE)', 'XAUUSD (cfd - FOREX.com)') },
@@ -142,7 +151,8 @@ module.exports = {
     teamA: Joi.string().trim().required(),
     teamB: Joi.string().trim().disallow(Joi.ref('teamA')).required(),
     week: Joi.string().trim().required(),
-    startDate: Joi.date().required(),
+    startDate: Joi.date().greater('now').required(),
+    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('startDate', { adjust: (v) => addHours(new Date(v), 8) })).required().messages({ 'any.only': '"expiryDate" must be 8 hours after the "startDate"' }),
   }),
 
@@ -152,7 +162,8 @@ module.exports = {
     teamB: Joi.string().trim().disallow(Joi.ref('teamA')).required(),
     week: Joi.string().trim().required(),
     points: Joi.number().min(1).required(),
-    startDate: Joi.date().required(),
+    startDate: Joi.date().greater('now').required(),
+    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('startDate', { adjust: (v) => addHours(new Date(v), 8) })).required().messages({ 'any.only': '"expiryDate" must be 8 hours after the "startDate"' }),
   }),
 
@@ -162,7 +173,8 @@ module.exports = {
     teamB: Joi.string().trim().disallow(Joi.ref('teamA')).required(),
     week: Joi.string().trim().required(),
     points: Joi.number().min(1).required(),
-    startDate: Joi.date().required(),
+    startDate: Joi.date().greater('now').required(),
+    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('startDate', { adjust: (v) => addHours(new Date(v), 8) })).required().messages({ 'any.only': '"expiryDate" must be 8 hours after the "startDate"' }),
   }),
 
@@ -175,6 +187,7 @@ module.exports = {
       new Date().getFullYear() + 1,
       new Date().getFullYear() + 2,
     ).required(),
+    closeDate: Joi.date().max(Joi.ref('expiryDate')).required(),
     expiryDate: Joi.date().greater('now').required(),
   }).custom((value) => {
     const isValid = new Date(value.expiryDate).getFullYear() >= value.year;
@@ -190,6 +203,7 @@ module.exports = {
     ...common,
     team: Joi.string().trim().required(),
     numeral: Joi.string().trim().required(),
+    closeDate: Joi.date().max(Joi.ref('expiryDate')).required(),
     expiryDate: Joi.date().greater('now').required(),
   }),
 
@@ -208,6 +222,7 @@ module.exports = {
       'Offensive Player of The Year',
       'Offensive Rookie of The Year',
     ).required(),
+    closeDate: Joi.date().max(Joi.ref('expiryDate')).required(),
     expiryDate: Joi.date().greater('now').required(),
   }).custom((value) => {
     const isValid = new Date(value.expiryDate).getFullYear() >= value.year;
@@ -225,20 +240,22 @@ module.exports = {
     teamB: Joi.string().trim().disallow(Joi.ref('teamA')).valid(Joi.in('outcomes'))
       .required(),
     week: Joi.string().trim().required(),
-    startDate: Joi.date().required(),
+    startDate: Joi.date().greater('now').required(),
+    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('startDate', { adjust: (v) => addHours(new Date(v), 8) })).required().messages({ 'any.only': '"expiryDate" must be 8 hours after the "startDate"' }),
-    outcomes: Joi.array().items(Joi.string().required(), Joi.string().required(), Joi.string().valid('No Contest').required()).required(),
+    outcomes: Joi.array().items(Joi.string().required(), Joi.string().required(), Joi.string().valid('No Contest').required()).unique().required(),
   }),
 
   'sports-americanfootball-categorical-2': Joi.object().keys({
     ...common,
-    teamA: Joi.string().trim().valid(Joi.in('outcomes')).required(),
-    teamB: Joi.string().trim().disallow(Joi.ref('teamA')).valid(Joi.in('outcomes'))
-      .required(),
+    teamA: Joi.string().trim().required(),
+    teamB: Joi.string().trim().required(),
     week: Joi.string().trim().required(),
-    startDate: Joi.date().required(),
+    points: Joi.number().min(0).required(),
+    startDate: Joi.date().greater('now').required(),
+    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('startDate', { adjust: (v) => addHours(new Date(v), 8) })).required().messages({ 'any.only': '"expiryDate" must be 8 hours after the "startDate"' }),
-    outcomes: Joi.array().items(Joi.string().required(), Joi.string().required(), Joi.string().valid('No Contest').required()).required(),
+    outcomes: Joi.array().items(Joi.string().required(), Joi.string().required(), Joi.string().valid('No Contest').required()).unique().required(),
   }),
 
   'sports-baseball-binary-1': Joi.object().keys({
@@ -254,6 +271,7 @@ module.exports = {
       'National League Championship Series',
       'World Series',
     ).required(),
+    closeDate: Joi.date().greater('now').max(Joi.ref('expiryDate')).required(),
     expiryDate: Joi.date().greater('now').required(),
   }).custom((value) => {
     const isValid = new Date(value.expiryDate).getFullYear() >= value.year;
@@ -270,7 +288,8 @@ module.exports = {
     fighterA: Joi.string().trim().valid(Joi.in('outcomes')).required(),
     fighterB: Joi.string().trim().disallow(Joi.ref('fighterA')).valid(Joi.in('outcomes'))
       .required(),
-    startDate: Joi.date().required(),
+    startDate: Joi.date().greater('now').required(),
+    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('startDate', { adjust: (v) => addHours(new Date(v), 9) })).required().messages({ 'any.only': '"expiryDate" must be 9 hours after the "startDate"' }),
     outcomes: Joi.array().items(Joi.string().required(), Joi.string().required(), Joi.string().valid('Draw/No Contest').required()).required(),
   }),
@@ -280,16 +299,18 @@ module.exports = {
     fighterA: Joi.string().trim().required(),
     fighterB: Joi.string().trim().disallow(Joi.ref('fighterA')).required(),
     rounds: Joi.number().valid(1.5, 2.5, 3.5, 4.5).required(),
-    startDate: Joi.date().required(),
+    startDate: Joi.date().greater('now').required(),
+    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('startDate', { adjust: (v) => addHours(new Date(v), 9) })).required().messages({ 'any.only': '"expiryDate" must be 9 hours after the "startDate"' }),
-    outcomes: Joi.array().items(Joi.string().regex(/^(Over|Under) [1-4].5$/).required(), Joi.string().regex(/^(Over|Under) [1-4].5$/).required(), Joi.string().valid('No Contest').required()).required(),
+    outcomes: Joi.array().items(Joi.string().regex(/^(Over|Under) [1-4].5$/).required(), Joi.string().regex(/^(Over|Under) [1-4].5$/).required(), Joi.string().valid('No Contest').required()).unique().required(),
   }),
 
   'sports-mma-categorical-3': Joi.object().keys({
     ...common,
     fighterA: Joi.string().trim().required(),
     fighterB: Joi.string().trim().disallow(Joi.ref('fighterA')).required(),
-    startDate: Joi.date().required(),
+    startDate: Joi.date().greater('now').required(),
+    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('startDate', { adjust: (v) => addHours(new Date(v), 9) })).required().messages({ 'any.only': '"expiryDate" must be 9 hours after the "startDate"' }),
     outcomes: Joi.array().items(
       Joi.string().regex(/by (KO\/TKO|Submission|Points)$/).required(),
@@ -306,7 +327,8 @@ module.exports = {
     ...common,
     fighterA: Joi.string().trim().required(),
     fighterB: Joi.string().trim().disallow(Joi.ref('fighterA')).required(),
-    startDate: Joi.date().required(),
+    startDate: Joi.date().greater('now').required(),
+    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('startDate', { adjust: (v) => addHours(new Date(v), 9) })).required().messages({ 'any.only': '"expiryDate" must be 9 hours after the "startDate"' }),
     outcomes: Joi.array().items(
       Joi.string().valid('KO/TKO').required(),
@@ -320,7 +342,8 @@ module.exports = {
     ...common,
     fighterA: Joi.string().trim().required(),
     fighterB: Joi.string().trim().disallow(Joi.ref('fighterA')).required(),
-    startDate: Joi.date().required(),
+    startDate: Joi.date().greater('now').required(),
+    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('startDate', { adjust: (v) => addHours(new Date(v), 9) })).required().messages({ 'any.only': '"expiryDate" must be 9 hours after the "startDate"' }),
     outcomes: Joi.array().items(
       Joi.string().regex(/^(Round [1-5]|Goes the distance)$/).required(),
@@ -338,7 +361,8 @@ module.exports = {
     tournament: Joi.string().valid('NBA', 'WNBA', 'NCAA Men\'s BB', 'NCAA Women\'s BB').required(),
     teamA: Joi.string().trim().required(),
     teamB: Joi.string().trim().disallow(Joi.ref('teamA')).required(),
-    startDate: Joi.date().required(),
+    startDate: Joi.date().greater('now').required(),
+    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('startDate', { adjust: (v) => addHours(new Date(v), 6) })).required().messages({ 'any.only': '"expiryDate" must be 6 hours after the "startDate"' }),
   }),
 
@@ -348,7 +372,8 @@ module.exports = {
     teamA: Joi.string().trim().valid(Joi.in('outcomes')).required(),
     teamB: Joi.string().trim().disallow(Joi.ref('teamA')).valid(Joi.in('outcomes'))
       .required(),
-    startDate: Joi.date().required(),
+    startDate: Joi.date().greater('now').required(),
+    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('startDate', { adjust: (v) => addHours(new Date(v), 6) })).required().messages({ 'any.only': '"expiryDate" must be 6 hours after the "startDate"' }),
     outcomes: Joi.array().items(Joi.string().required(), Joi.string().required(), Joi.string().valid('No Contest').required()).unique().required(),
   }),
@@ -358,7 +383,8 @@ module.exports = {
     fighterA: Joi.string().trim().valid(Joi.in('outcomes')).required(),
     fighterB: Joi.string().trim().disallow(Joi.ref('fighterA')).valid(Joi.in('outcomes'))
       .required(),
-    startDate: Joi.date().required(),
+    startDate: Joi.date().greater('now').required(),
+    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('startDate', { adjust: (v) => addHours(new Date(v), 9) })).required().messages({ 'any.only': '"expiryDate" must be 9 hours after the "startDate"' }),
     outcomes: Joi.array().items(Joi.string().required(), Joi.string().required(), Joi.string().valid('Draw/No Contest').required()).unique().required(),
   }),
@@ -372,6 +398,7 @@ module.exports = {
     ).required(),
     event: Joi.string().required(),
     startDate: Joi.date().greater('now').required(),
+    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('startDate', { adjust: (v) => addHours(new Date(v), 24) })).required().messages({ 'any.only': '"expiryDate" must be 24 hours after the "startDate"' }),
     outcomes: Joi.array().items(Joi.string().required(), Joi.string().required(), Joi.string().valid('Other').required(), Joi.string().valid('No Contest').required()).unique().required(),
   }),
@@ -384,8 +411,9 @@ module.exports = {
     teamB: Joi.string().trim().disallow(Joi.ref('teamA')).valid(Joi.in('outcomes'))
       .required(),
     startDate: Joi.date().greater('now').required(),
+    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('startDate', { adjust: (v) => addHours(new Date(v), 6) })).required().messages({ 'any.only': '"expiryDate" must be 6 hours after the "startDate"' }),
-    outcomes: Joi.array().items(Joi.string().required(), Joi.string().required(), Joi.string().valid('Draw').required(), Joi.string().valid('No Contest').required()).required(),
+    outcomes: Joi.array().items(Joi.string().required(), Joi.string().required(), Joi.string().valid('Draw').required(), Joi.string().valid('No Contest').required()).unique().required(),
   }),
 
   'sports-golf-binary-1': Joi.object().keys({
@@ -398,6 +426,7 @@ module.exports = {
       new Date().getFullYear() + 2,
     ).required(),
     event: Joi.string().required(),
+    closeDate: Joi.date().greater('now').max(Joi.ref('expiryDate')).required(),
     expiryDate: Joi.date().greater('now').required(),
   }),
 
@@ -410,6 +439,7 @@ module.exports = {
       new Date().getFullYear() + 2,
     ).required(),
     event: Joi.string().required(),
+    closeDate: Joi.date().greater('now').max(Joi.ref('expiryDate')).required(),
     expiryDate: Joi.date().greater('now').required(),
     outcomes: Joi.array().items(Joi.string().required(), Joi.string().required(), Joi.string().valid('Other').required(), Joi.string().valid('No Contest').required()).unique().required(),
   }),
@@ -418,7 +448,8 @@ module.exports = {
     ...common,
     teamA: Joi.string().trim().required(),
     teamB: Joi.string().trim().disallow(Joi.ref('teamA')).required(),
-    startDate: Joi.date().required(),
+    startDate: Joi.date().greater('now').required(),
+    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('startDate', { adjust: (v) => addHours(new Date(v), 6) })).required().messages({ 'any.only': '"expiryDate" must be 6 hours after the "startDate"' }),
   }),
 
@@ -427,9 +458,10 @@ module.exports = {
     teamA: Joi.string().trim().valid(Joi.in('outcomes')).required(),
     teamB: Joi.string().trim().disallow(Joi.ref('teamA')).valid(Joi.in('outcomes'))
       .required(),
-    startDate: Joi.date().required(),
+    startDate: Joi.date().greater('now').required(),
+    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('startDate', { adjust: (v) => addHours(new Date(v), 6) })).required().messages({ 'any.only': '"expiryDate" must be 6 hours after the "startDate"' }),
-    outcomes: Joi.array().items(Joi.string().required(), Joi.string().required(), Joi.string().valid('No Contest').required()).required(),
+    outcomes: Joi.array().items(Joi.string().required(), Joi.string().required(), Joi.string().valid('No Contest').required()).unique().required(),
   }),
 
   'sports-horseracing-binary-1': Joi.object().keys({
@@ -441,6 +473,7 @@ module.exports = {
       new Date().getFullYear() + 2,
     ).required(),
     event: Joi.string().required(),
+    closeDate: Joi.date().greater('now').max(Joi.ref('expiryDate')).required(),
     expiryDate: Joi.date().greater('now').required(),
   }),
 
@@ -452,6 +485,7 @@ module.exports = {
       new Date().getFullYear() + 2,
     ).required(),
     event: Joi.string().required(),
+    closeDate: Joi.date().greater('now').max(Joi.ref('expiryDate')).required(),
     expiryDate: Joi.date().greater('now').required(),
     outcomes: Joi.array().items(Joi.string().required(), Joi.string().required(), Joi.string().valid('Other').required(), Joi.string().valid('No Contest').required()).unique().required(),
   }),
@@ -466,6 +500,7 @@ module.exports = {
     ]).required(),
     event: Joi.string().required(),
     country: Joi.string().required(),
+    closeDate: Joi.date().greater('now').max(Joi.ref('expiryDate')).required(),
     expiryDate: Joi.date().greater('now').required(),
   }),
 
@@ -480,6 +515,7 @@ module.exports = {
     medalType: Joi.string().valid('Bronze', 'Silver', 'Gold', 'Total').required(),
     countryA: Joi.string().required(),
     countryB: Joi.string().disallow(Joi.ref('countryA')).required(),
+    closeDate: Joi.date().greater('now').max(Joi.ref('expiryDate')).required(),
     expiryDate: Joi.date().greater('now').required(),
   }),
 
@@ -491,6 +527,7 @@ module.exports = {
       { is: 'Winter', then: Joi.number().valid(2022, 2026, 2030) },
     ]).required(),
     medalType: Joi.string().valid('Bronze', 'Silver', 'Gold', 'Total').required(),
+    closeDate: Joi.date().greater('now').max(Joi.ref('expiryDate')).required(),
     expiryDate: Joi.date().greater('now').required(),
     outcomes: Joi.array().items(Joi.string().required(), Joi.string().required(), Joi.string().valid('Other Country').required()).unique().required(),
   }),
@@ -509,6 +546,7 @@ module.exports = {
     ).required(),
     players: Joi.string().trim().required(),
     event: Joi.string().trim().required(),
+    closeDate: Joi.date().greater('now').max(Joi.ref('expiryDate')).required(),
     expiryDate: Joi.date().greater('now').required(),
   }),
 
@@ -525,6 +563,7 @@ module.exports = {
       new Date().getFullYear() + 2,
     ).required(),
     event: Joi.string().trim().required(),
+    closeDate: Joi.date().greater('now').max(Joi.ref('expiryDate')).required(),
     expiryDate: Joi.date().greater('now').required(),
     outcomes: Joi.array().items(Joi.string().required(), Joi.string().required(), Joi.string().valid('Other').required(), Joi.string().valid('No Contest').required()).unique().required(),
   }),
@@ -538,7 +577,18 @@ module.exports = {
       new Date().getFullYear() + 2,
     ).required(),
     percentage: Joi.number().min(0.001).required(),
+    closeDate: Joi.date().greater('now').required(),
     expiryDate: Joi.date().greater('now').required(),
+  }).custom((value, helpers) => {
+    if (lastDayOfMonth(new Date(`${value.month} 1, ${value.year}`)).getTime() !== value.closeDate.getTime()) {
+      return helpers.error('any.invalid');
+    }
+
+    if (addMonths(lastDayOfMonth(new Date(`${value.month} 1, ${value.year}`)), 1).getTime() !== value.expiryDate.getTime()) {
+      return helpers.error('any.invalid');
+    }
+
+    return value;
   }),
 
   'entertainment-awards-binary-1': Joi.object().keys({
@@ -550,7 +600,8 @@ module.exports = {
       new Date().getFullYear() + 2,
     ).required(),
     event: Joi.string().required(),
-    expiryDate: Joi.date().greater('now').required(),
+    closeDate: Joi.date().greater('now').required(),
+    expiryDate: Joi.date().min(Joi.ref('closeDate')).required(),
   }),
 
   'entertainment-awards-binary-2': Joi.object().keys({
@@ -563,7 +614,8 @@ module.exports = {
     ).required(),
     award: Joi.string().required(),
     event: Joi.string().required(),
-    expiryDate: Joi.date().greater('now').required(),
+    closeDate: Joi.date().greater('now').required(),
+    expiryDate: Joi.date().min(Joi.ref('closeDate')).required(),
   }),
 
   'entertainment-awards-categorical-1': Joi.object().keys({
@@ -574,7 +626,8 @@ module.exports = {
       new Date().getFullYear() + 2,
     ).required(),
     event: Joi.string().required(),
-    expiryDate: Joi.date().greater('now').required(),
+    closeDate: Joi.date().greater('now').required(),
+    expiryDate: Joi.date().min(Joi.ref('closeDate')).required(),
     outcomes: Joi.array().items(Joi.string().required(), Joi.string().required(), Joi.string().valid('Multiple Hosts').required(), Joi.string().valid('Other').required()).unique().required(),
   }),
 
@@ -587,7 +640,8 @@ module.exports = {
       new Date().getFullYear() + 2,
     ).required(),
     event: Joi.string().required(),
-    expiryDate: Joi.date().greater('now').required(),
+    closeDate: Joi.date().greater('now').required(),
+    expiryDate: Joi.date().min(Joi.ref('closeDate')).required(),
     outcomes: Joi.array().items(Joi.string().required(), Joi.string().required(), Joi.string().valid('Other').required()).unique().required(),
   }),
 
@@ -597,6 +651,7 @@ module.exports = {
     username: Joi.string().min(3).required(),
     followers: Joi.number().min(1).required(),
     date: Joi.date().required(),
+    closeDate: Joi.date().valid(Joi.ref('date')).required(),
     expiryDate: Joi.date().valid(Joi.ref('date', { adjust: (v) => addDays(new Date(v), 2) })).required().messages({ 'any.only': '"expiryDate" must be 2 days after the "date"' }),
   }),
 
@@ -605,6 +660,7 @@ module.exports = {
     movie: Joi.string().required(),
     sales: Joi.number().required(),
     date: Joi.date().required(),
+    closeDate: Joi.date().valid(Joi.ref('date')).required(),
     expiryDate: Joi.date().greater(Joi.ref('date')).required(),
   }),
 
@@ -614,12 +670,14 @@ module.exports = {
     amountType: Joi.string().valid('Cases of', 'Deaths from').required(),
     country: Joi.string().required(),
     date: Joi.date().required(),
+    closeDate: Joi.date().valid(Joi.ref('date')).required(),
     expiryDate: Joi.date().greater(Joi.ref('date')).required(),
   }),
 
   'politics-uspolitics-binary-1': Joi.object().keys({
     ...common,
     year: Joi.number().valid(2024, 2028, 2032).required(),
+    closeDate: Joi.date().max(Joi.ref('expiryDate')).required(),
     expiryDate: Joi.date().greater('now').required(),
   }),
 
@@ -628,12 +686,14 @@ module.exports = {
     candidate: Joi.string().required(),
     office: Joi.string().valid('U.S House of Representatives', 'U.S. President', 'U.S. Senator', 'U.S. Vice-President').required(),
     date: Joi.date().required(),
+    closeDate: Joi.date().valid(Joi.ref('date')).required(),
     expiryDate: Joi.date().greater(Joi.ref('date')).required(),
   }),
 
   'politics-uspolitics-categorical-1': Joi.object().keys({
     ...common,
     year: Joi.number().valid(2024, 2028, 2032).required(),
+    closeDate: Joi.date().max(Joi.ref('expiryDate')).required(),
     expiryDate: Joi.date().greater('now').required(),
     outcomes: Joi.array().items(Joi.string().required(), Joi.string().required(), Joi.string().valid('Other').required()).unique().required(),
   }),
@@ -644,6 +704,7 @@ module.exports = {
     position: Joi.string().valid('Chancellor', 'Chief Executive', 'Crown Prince', 'King', 'President', 'Prime Minister', 'Supreme Leader').required(),
     country: Joi.string().required(),
     date: Joi.date().required(),
+    closeDate: Joi.date().valid(Joi.ref('date')).required(),
     expiryDate: Joi.date().greater(Joi.ref('date')).required(),
   }),
 
@@ -652,6 +713,7 @@ module.exports = {
     position: Joi.string().valid('Chancellor', 'Chief Executive', 'Crown Prince', 'King', 'President', 'Prime Minister', 'Supreme Leader').required(),
     country: Joi.string().required(),
     date: Joi.date().required(),
+    closeDate: Joi.date().valid(Joi.ref('date')).required(),
     expiryDate: Joi.date().greater(Joi.ref('date')).required(),
     outcomes: Joi.array().items(Joi.string().required(), Joi.string().required(), Joi.string().valid('Other').required()).unique().required(),
   }),

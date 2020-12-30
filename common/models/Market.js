@@ -39,7 +39,7 @@ const MarketSchema = new mongoose.Schema({
   },
   status: {
     type: Number,
-    // 0 = inactive, 1 = open, 2 = reporting, 3 = reported, 4 = disputing, 5 = finalized,
+    // 0 = inactive, 1 = open, 2 = closed 3 = reporting, 4 = reported, 5 = finalized
     enum: [0, 1, 2, 3, 4, 5],
     default: 1,
   },
@@ -76,7 +76,14 @@ const MarketSchema = new mongoose.Schema({
     type: String,
   }],
   reported_outcomes: Object,
-  expires_at: Date,
+  closes_at: {
+    type: Date,
+    required: true,
+  },
+  expires_at: {
+    type: Date,
+    required: true,
+  },
   __v: { type: Number, select: false },
 }, {
   timestamps: {

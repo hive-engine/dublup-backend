@@ -100,8 +100,7 @@
       "Baseball": {
         "icon": "terminal",
         "types": [
-          "binary",
-          "categorical"
+          "binary"
         ]
       },
       "Basketball": {
