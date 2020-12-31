@@ -96,14 +96,16 @@ const selectRandomOracles = async () => {
 
 const updateMarketsStatus = async () => {
   try {
-    const markets = await Market.find({ $and: [{ status: { $gt: 0 } }, { status: { $lt: 5 } }] });
+    const markets = await Market.find({ $and: [{ status: { $gte: 0 } }, { status: { $lt: 5 } }] });
 
     for (let i = 0; i < markets.length; i += 1) {
       const market = markets[i];
 
       if (market.status === 1 && Date.now() >= new Date(market.closes_at).getTime()) {
         market.status = 2; // market closed
-      } else if (market.status === 2 && Date.now() >= new Date(market.expires_at).getTime()) {
+      } else if (
+        (market.status === 0 || market.status === 2)
+        && Date.now() >= new Date(market.expires_at).getTime()) {
         market.oracles = await selectRandomOracles();
         market.status = 3; // market reporting
       } else if (market.status === 3
