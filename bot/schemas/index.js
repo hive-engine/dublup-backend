@@ -677,7 +677,7 @@ module.exports = {
   'politics-uspolitics-binary-1': Joi.object().keys({
     ...common,
     year: Joi.number().valid(2024, 2028, 2032).required(),
-    closeDate: Joi.date().max(Joi.ref('expiryDate')).required(),
+    closeDate: Joi.date().greater('now').max(Joi.ref('expiryDate')).required(),
     expiryDate: Joi.date().greater('now').required(),
   }),
 
@@ -686,14 +686,14 @@ module.exports = {
     candidate: Joi.string().required(),
     office: Joi.string().valid('U.S House of Representatives', 'U.S. President', 'U.S. Senator', 'U.S. Vice-President').required(),
     date: Joi.date().required(),
-    closeDate: Joi.date().valid(Joi.ref('date')).required(),
+    closeDate: Joi.date().greater('now').valid(Joi.ref('date')).required(),
     expiryDate: Joi.date().greater(Joi.ref('date')).required(),
   }),
 
   'politics-uspolitics-categorical-1': Joi.object().keys({
     ...common,
     year: Joi.number().valid(2024, 2028, 2032).required(),
-    closeDate: Joi.date().max(Joi.ref('expiryDate')).required(),
+    closeDate: Joi.date().greater('now').max(Joi.ref('expiryDate')).required(),
     expiryDate: Joi.date().greater('now').required(),
     outcomes: Joi.array().items(Joi.string().required(), Joi.string().required(), Joi.string().valid('Other').required()).unique().required(),
   }),
