@@ -39,7 +39,7 @@ module.exports = {
     ...common,
     pair: Joi.string().valid('BTC-USD', 'BTC-EUR', 'BTC-USDT', 'ETH-USD', 'ETH-EUR', 'ETH-USDT', 'HIVE-USD', 'HIVE-USDT').required(),
     price: Joi.number().min(0.001).required(),
-    startDate: Joi.date().required(),
+    startDate: Joi.date().greater('now').required(),
     closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('startDate', { adjust: (v) => addDays(new Date(v), 1) })).required().messages({ 'any.only': '"expiryDate" must be 1 day after the "startDate"' }),
     source: Joi.alternatives().conditional('pair', {
@@ -62,8 +62,8 @@ module.exports = {
     ...common,
     pair: Joi.string().valid('BTC-USD', 'BTC-EUR', 'BTC-USDT', 'ETH-USD', 'ETH-EUR', 'ETH-USDT', 'HIVE-USD', 'HIVE-USDT').required(),
     price: Joi.number().min(0.001).required(),
-    startDate: Joi.date().required(),
-    endDate: Joi.date().required(),
+    startDate: Joi.date().greater('now').required(),
+    endDate: Joi.date().min(Joi.ref('startDate')).required(),
     closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('endDate', { adjust: (v) => addDays(new Date(v), 1) })).required().messages({ 'any.only': '"expiryDate" must be 1 day after the "endDate"' }),
     source: Joi.alternatives().conditional('pair', {
@@ -86,7 +86,7 @@ module.exports = {
     ...common,
     pair: Joi.string().valid('NASDAQ-GOOG', 'NASDAQ-AAPL', 'NASDAQ-TSLA').required(),
     price: Joi.number().min(0.001).required(),
-    startDate: Joi.date().required(),
+    startDate: Joi.date().greater('now').required(),
     closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('startDate', { adjust: (v) => addDays(new Date(v), 1) })).required().messages({ 'any.only': '"expiryDate" must be 1 day after the "startDate"' }),
     source: Joi.alternatives().conditional('pair', {
@@ -102,8 +102,8 @@ module.exports = {
     ...common,
     pair: Joi.string().valid('NASDAQ-GOOG', 'NASDAQ-AAPL', 'NASDAQ-TSLA').required(),
     price: Joi.number().min(0.001).required(),
-    startDate: Joi.date().required(),
-    endDate: Joi.date().required(),
+    startDate: Joi.date().greater('now').required(),
+    endDate: Joi.date().min(Joi.ref('startDate')).required(),
     closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('endDate', { adjust: (v) => addDays(new Date(v), 1) })).required().messages({ 'any.only': '"expiryDate" must be 1 day after the "endDate"' }),
     source: Joi.alternatives().conditional('pair', {
@@ -119,7 +119,7 @@ module.exports = {
     ...common,
     pair: Joi.string().valid('XAU-USD', 'XAG-USD').required(),
     price: Joi.number().min(0.001).required(),
-    startDate: Joi.date().required(),
+    startDate: Joi.date().greater('now').required(),
     closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('startDate', { adjust: (v) => addDays(new Date(v), 1) })).required().messages({ 'any.only': '"expiryDate" must be 1 day after the "startDate"' }),
     source: Joi.alternatives().conditional('pair', {
@@ -134,8 +134,8 @@ module.exports = {
     ...common,
     pair: Joi.string().valid('XAU-USD', 'XAG-USD').required(),
     price: Joi.number().min(0.001).required(),
-    startDate: Joi.date().required(),
-    endDate: Joi.date().required(),
+    startDate: Joi.date().greater('now').required(),
+    endDate: Joi.date().min(Joi.ref('startDate')).required(),
     closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('endDate', { adjust: (v) => addDays(new Date(v), 1) })).required().messages({ 'any.only': '"expiryDate" must be 1 day after the "endDate"' }),
     source: Joi.alternatives().conditional('pair', {
@@ -187,7 +187,7 @@ module.exports = {
       new Date().getFullYear() + 1,
       new Date().getFullYear() + 2,
     ).required(),
-    closeDate: Joi.date().max(Joi.ref('expiryDate')).required(),
+    closeDate: Joi.date().greater('now').max(Joi.ref('expiryDate')).required(),
     expiryDate: Joi.date().greater('now').required(),
   }).custom((value) => {
     const isValid = new Date(value.expiryDate).getFullYear() >= value.year;
@@ -203,7 +203,7 @@ module.exports = {
     ...common,
     team: Joi.string().trim().required(),
     numeral: Joi.string().trim().required(),
-    closeDate: Joi.date().max(Joi.ref('expiryDate')).required(),
+    closeDate: Joi.date().greater('now').max(Joi.ref('expiryDate')).required(),
     expiryDate: Joi.date().greater('now').required(),
   }),
 
@@ -222,7 +222,7 @@ module.exports = {
       'Offensive Player of The Year',
       'Offensive Rookie of The Year',
     ).required(),
-    closeDate: Joi.date().max(Joi.ref('expiryDate')).required(),
+    closeDate: Joi.date().greater('now').max(Joi.ref('expiryDate')).required(),
     expiryDate: Joi.date().greater('now').required(),
   }).custom((value) => {
     const isValid = new Date(value.expiryDate).getFullYear() >= value.year;
@@ -577,7 +577,7 @@ module.exports = {
       new Date().getFullYear() + 2,
     ).required(),
     percentage: Joi.number().min(0.001).required(),
-    closeDate: Joi.date().greater('now').required(),
+    closeDate: Joi.date().greater('now').max(Joi.ref('expiryDate')).required(),
     expiryDate: Joi.date().greater('now').required(),
   }).custom((value, helpers) => {
     if (lastDayOfMonth(new Date(`${value.month} 1, ${value.year}`)).getTime() !== value.closeDate.getTime()) {
@@ -650,7 +650,7 @@ module.exports = {
     socialmedia: Joi.string().valid('Twitter', 'Instagram').required(),
     username: Joi.string().min(3).required(),
     followers: Joi.number().min(1).required(),
-    date: Joi.date().required(),
+    date: Joi.date().greater('now').required(),
     closeDate: Joi.date().valid(Joi.ref('date')).required(),
     expiryDate: Joi.date().valid(Joi.ref('date', { adjust: (v) => addDays(new Date(v), 2) })).required().messages({ 'any.only': '"expiryDate" must be 2 days after the "date"' }),
   }),
@@ -659,9 +659,9 @@ module.exports = {
     ...common,
     movie: Joi.string().required(),
     sales: Joi.number().required(),
-    date: Joi.date().required(),
+    date: Joi.date().greater('now').required(),
     closeDate: Joi.date().valid(Joi.ref('date')).required(),
-    expiryDate: Joi.date().greater(Joi.ref('date')).required(),
+    expiryDate: Joi.date().min(Joi.ref('closeDate')).required(),
   }),
 
   'medical-general-binary-1': Joi.object().keys({
@@ -669,9 +669,9 @@ module.exports = {
     amount: Joi.number().min(1).required(),
     amountType: Joi.string().valid('Cases of', 'Deaths from').required(),
     country: Joi.string().required(),
-    date: Joi.date().required(),
+    date: Joi.date().greater('now').required(),
     closeDate: Joi.date().valid(Joi.ref('date')).required(),
-    expiryDate: Joi.date().greater(Joi.ref('date')).required(),
+    expiryDate: Joi.date().min(Joi.ref('closeDate')).required(),
   }),
 
   'politics-uspolitics-binary-1': Joi.object().keys({
@@ -685,9 +685,9 @@ module.exports = {
     ...common,
     candidate: Joi.string().required(),
     office: Joi.string().valid('U.S House of Representatives', 'U.S. President', 'U.S. Senator', 'U.S. Vice-President').required(),
-    date: Joi.date().required(),
+    date: Joi.date().greater('now').required(),
     closeDate: Joi.date().greater('now').valid(Joi.ref('date')).required(),
-    expiryDate: Joi.date().greater(Joi.ref('date')).required(),
+    expiryDate: Joi.date().min(Joi.ref('closeDate')).required(),
   }),
 
   'politics-uspolitics-categorical-1': Joi.object().keys({
@@ -703,18 +703,18 @@ module.exports = {
     person: Joi.string().required(),
     position: Joi.string().valid('Chancellor', 'Chief Executive', 'Crown Prince', 'King', 'President', 'Prime Minister', 'Supreme Leader').required(),
     country: Joi.string().required(),
-    date: Joi.date().required(),
+    date: Joi.date().greater('now').required(),
     closeDate: Joi.date().valid(Joi.ref('date')).required(),
-    expiryDate: Joi.date().greater(Joi.ref('date')).required(),
+    expiryDate: Joi.date().min(Joi.ref('closeDate')).required(),
   }),
 
   'politics-world-categorical-1': Joi.object().keys({
     ...common,
     position: Joi.string().valid('Chancellor', 'Chief Executive', 'Crown Prince', 'King', 'President', 'Prime Minister', 'Supreme Leader').required(),
     country: Joi.string().required(),
-    date: Joi.date().required(),
+    date: Joi.date().greater('now').required(),
     closeDate: Joi.date().valid(Joi.ref('date')).required(),
-    expiryDate: Joi.date().greater(Joi.ref('date')).required(),
+    expiryDate: Joi.date().min(Joi.ref('closeDate')).required(),
     outcomes: Joi.array().items(Joi.string().required(), Joi.string().required(), Joi.string().valid('Other').required()).unique().required(),
   }),
 };
