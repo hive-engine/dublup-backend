@@ -1,6 +1,7 @@
 const config = require('../../common/config');
 const logger = require('../../common/logger');
 const { Transaction } = require('../../common/models');
+const { insertNotification } = require('../modules');
 
 module.exports = async (trx, scClient) => {
   const {
@@ -75,6 +76,18 @@ module.exports = async (trx, scClient) => {
       await Transaction.insertMany(transactions);
     } catch (e) {
       logger.error(`Error: Inserting buy order transactions. User: ${username} TX: ${trxId} Message: ${e.message}`, { transactions });
+    }
+
+    for (let i = 0; i < transactions.length; i += 1) {
+      const {
+        account, counterparty, data, market_id: marketId,
+      } = transactions[i];
+
+      const dataObj = JSON.parse(data);
+
+      await insertNotification(account, 'market-buy', { ...dataObj, market: marketId, seller: counterparty });
+
+      await insertNotification(counterparty, 'market-sell', { ...dataObj, market: marketId, buyer: account });
     }
   } catch (e) {
     logger.error(`Error: Updating buy order record. User: ${username} TX: ${trxId} Message: ${e.message}`);

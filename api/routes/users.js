@@ -1,9 +1,10 @@
 const JWT = require('jsonwebtoken');
 const Joi = require('joi');
 const Boom = require('@hapi/boom');
+const crypto = require('crypto');
 const { cryptoUtils, Signature } = require('@hiveio/dhive');
 const { differenceInMinutes } = require('date-fns');
-const { User } = require('../../common/models');
+const { Notification, User } = require('../../common/models');
 const { getClient } = require('../../common/chain');
 const config = require('../../common/config');
 
@@ -111,6 +112,58 @@ module.exports = [
       const user = await User.findOne({ username }).select('-_id username oracle reputation banned').lean();
 
       return user || {};
+    },
+  },
+
+  {
+    method: 'GET',
+    path: '/users/notifications',
+    options: {
+      auth: 'jwt',
+    },
+    handler: async (request, h) => {
+      const { sub: username } = request.auth.credentials;
+
+      const userNotifications = await Notification.find({ account: username, read: false })
+        .sort({ timestamp: -1 });
+
+      const hash = crypto.createHash('sha1');
+      hash.update(JSON.stringify(userNotifications));
+
+      const etag = hash.digest('base64');
+
+      return h.response(userNotifications).etag(etag);
+    },
+  },
+
+  {
+    method: 'POST',
+    path: '/users/notifications',
+    options: {
+      auth: 'jwt',
+      validate: {
+        payload: Joi.object({
+          ids: Joi.array().items(Joi.string()).required(),
+        }).options({ stripUnknown: true }),
+      },
+    },
+    handler: async (request) => {
+      const response = { success: true };
+
+      const { ids } = request.payload;
+
+      const { sub } = request.auth.credentials;
+
+      try {
+        await Notification.updateMany(
+          { _id: { $in: ids }, account: sub },
+          { $set: { read: true } },
+        );
+      } catch (e) {
+        response.success = false;
+      }
+
+      return response;
     },
   },
 ];

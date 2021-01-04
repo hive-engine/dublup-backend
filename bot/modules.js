@@ -7,12 +7,24 @@ const {
   SidechainClient,
   toFixedWithoutRounding,
 } = require('./helpers');
-const { Market, User } = require('../common/models');
+const { Market, Notification, User } = require('../common/models');
 const { activeKey, getClient } = require('../common/chain');
 const config = require('../common/config');
 const logger = require('../common/logger');
 
 const hiveClient = getClient();
+
+const insertNotification = async (account, type, data) => {
+  try {
+    await Notification.create({
+      account,
+      type,
+      data: JSON.stringify(data),
+    });
+  } catch (e) {
+    logger.error(`Failed to insert notification. Message: ${e.message} User: ${account} Type: ${type}`, { data });
+  }
+};
 
 // Adapted from https://gist.github.com/mumbleskates/75aa2a799eb536f7227d/
 
@@ -103,11 +115,19 @@ const updateMarketsStatus = async () => {
 
       if (market.status === 1 && Date.now() >= new Date(market.closes_at).getTime()) {
         market.status = 2; // market closed
+
+        await insertNotification(market.creator, 'market-close', { market: market._id });
       } else if (
         (market.status === 0 || market.status === 2)
         && Date.now() >= new Date(market.expires_at).getTime()) {
         market.oracles = await selectRandomOracles();
         market.status = 3; // market reporting
+
+        const notifications = [];
+
+        market.oracles.forEach((o) => notifications.push(insertNotification(o, 'oracle', { market: market._id })));
+
+        await Promise.all(notifications);
       } else if (market.status === 3
         && market.reported_outcomes
         && Object.keys(market.reported_outcomes).length >= config.ORACLE_REQUIRED
@@ -431,6 +451,7 @@ const updateOracleStakes = async () => {
 };
 
 module.exports = {
+  insertNotification,
   settleReportedMarkets,
   updateMarketsStatus,
   updateOracleStakes,
