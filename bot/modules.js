@@ -329,7 +329,30 @@ const settleReportedMarkets = async () => {
 
       if (market.reported_outcomes
         && Object.values(market.reported_outcomes).length >= config.ORACLE_REQUIRED) {
-        const outcomes = countOccurances(Object.values(market.reported_outcomes));
+        let outcomes = countOccurances(Object.values(market.reported_outcomes));
+
+        const sortedOutcomes = Object.entries(outcomes).sort((a, b) => b[1] - a[1]);
+
+        if (sortedOutcomes.filter((v, idx, a) => a[0][1] === v[1]).length > 1) {
+          logger.info(`There is a tie. Market: ${market._id}`);
+
+          const oracles = Object.keys(market.reported_outcomes);
+          const oracleStake = await User.find({ username: { $in: oracles } }, '-_id username stake');
+
+          const outcomeWithStakes = sortedOutcomes.reduce((acc, cur) => {
+            const [outcome] = cur;
+
+            const voters = oracles.filter((o) => market.reported_outcomes[o] === outcome);
+            const stakes = oracleStake.filter((o) => voters.includes(o.username))
+              .reduce((a, c) => a + c.stake, 0);
+
+            acc.push([outcome, stakes]);
+
+            return acc;
+          }, []);
+
+          outcomes = Object.fromEntries(outcomeWithStakes);
+        }
 
         const winningOutcome = Object.keys(outcomes)
           .reduce((a, b) => (outcomes[a] > outcomes[b] ? a : b));
