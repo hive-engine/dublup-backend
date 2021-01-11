@@ -57,17 +57,6 @@
       }
     }
   },
-  "Medical": {
-    "icon": "scissors",
-    "sub_category": {
-      "General": {
-        "icon": "terminal",
-        "types": [
-          "binary"
-        ]
-      }
-    }
-  },
   "Politics": {
     "icon": "home",
     "sub_category": {
