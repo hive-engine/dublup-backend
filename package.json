@@ -1,5 +1,5 @@
 {
-  "name": "predictionmarket",
+  "name": "dublup-backend",
   "version": "1.0.0",
   "description": "Prediction market built on top of Hive-Engine",
   "main": "main.js",
@@ -9,7 +9,7 @@
   "author": "Reazul Iqbal",
   "license": "ISC",
   "devDependencies": {
-    "eslint": "^7.16.0",
+    "eslint": "^7.17.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1"
   },
@@ -25,8 +25,8 @@
     "hapi-auth-jwt2": "^10.2.0",
     "joi": "^17.3.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.11.9",
-    "sqlite3": "^5.0.0",
+    "mongoose": "^5.11.11",
+    "sqlite3": "^5.0.1",
     "ulid": "^2.3.0",
     "winston": "^3.3.3",
     "ws": "^7.4.2"
