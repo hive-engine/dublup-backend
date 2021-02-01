@@ -10,6 +10,12 @@ const sendMessage = (client, type, payload) => {
   client.send(JSON.stringify({ type, payload }));
 };
 
+const broadcastToAll = (type, payload) => {
+  wss.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) sendMessage(client, type, payload);
+  });
+};
+
 const broadcastToUser = (user, type, payload) => {
   if (AUTHENTICATED_CLIENTS.has(user)) {
     const clients = AUTHENTICATED_CLIENTS.get(user);
@@ -120,5 +126,6 @@ process.on('uncaughtException', (err) => {
 });
 
 module.exports = {
+  broadcastToAll,
   broadcastToUser,
 };

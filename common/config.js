@@ -11,15 +11,15 @@ module.exports = {
   WS_PORT: process.env.WS_PORT || 5000,
   JWT_SECRET: process.env.JWT_SECRET,
   CHAIN_NAME: 'hive',
-  APP_ID: 'predict-land',
+  APP_ID: 'dublup-io',
   SIDECHAIN_ID: 'ssc-testnet-reaz',
   SIDECHAIN_RPC: 'https://packmanager.dtools.dev/rpc', // 'https://api.hive-engine.com/rpc',
   NFT_ISSUE_FEE_SYMBOL: 'BEE',
-  NFT_SYMBOL: 'PREDICT',
+  NFT_SYMBOL: 'DUBLUP',
   CURRENCY: 'PAL',
   MARKET_FEE: 300, // 3%
-  CREATION_FEE: 100,
-  SHARE_PRICE: 10,
+  CREATION_FEE: 100, // Served from database
+  SHARE_PRICE: 10, // Served from database
   MARKET_CREATOR_SHARE: 0.01, // percentage
   ORACLES_SHARE: 0.04, // percentage
   ORACLE_REQUIRED: 3,

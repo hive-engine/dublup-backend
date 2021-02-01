@@ -4,7 +4,9 @@
   "description": "Prediction market built on top of Hive-Engine",
   "main": "main.js",
   "scripts": {
-    "start": "node main.js"
+    "start": "node main.js",
+    "migrate:up": "migrate-mongo up",
+    "migrate:down": "migrate-mongo down"
   },
   "author": "Reazul Iqbal",
   "license": "ISC",
@@ -25,6 +27,7 @@
     "hapi-auth-jwt2": "^10.2.0",
     "joi": "^17.3.0",
     "jsonwebtoken": "^8.5.1",
+    "migrate-mongo": "^8.1.4",
     "mongoose": "^5.11.11",
     "sqlite3": "^5.0.1",
     "ulid": "^2.3.0",
@@ -34,6 +37,7 @@
   "nodemonConfig": {
     "ignore": [
       "playground",
+      "migrations",
       "*.db"
     ]
   }
