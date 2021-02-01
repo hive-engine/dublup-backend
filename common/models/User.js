@@ -23,7 +23,7 @@ const UserSchema = new mongoose.Schema({
   },
   reputation: {
     type: Number,
-    default: 0,
+    default: 10,
   },
   banned: {
     type: Boolean,
