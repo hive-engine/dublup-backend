@@ -1,7 +1,7 @@
 const config = require('../../../common/config');
 const schemas = require('../../schemas');
 const logger = require('../../../common/logger');
-const { Market, Transaction } = require('../../../common/models');
+const { Config, Market, Transaction } = require('../../../common/models');
 const { broadcastToUser } = require('../../../common/websocket');
 const { generateQuestion, generatePossibleOutcomes, refundToken } = require('../../helpers');
 
@@ -18,8 +18,10 @@ module.exports = async (trx) => {
   try {
     const receivedAmount = Number(quantity);
 
-    if (receivedAmount < config.CREATION_FEE || symbol !== config.CURRENCY) {
-      const message = `Insufficient market creation fee. Required fee is ${config.CREATION_FEE} ${config.CURRENCY}.`;
+    const { creation_fee: CREATION_FEE, share_price: SHARE_PRICE } = await Config.findOne({});
+
+    if (receivedAmount < CREATION_FEE || symbol !== config.CURRENCY) {
+      const message = `Insufficient market creation fee. Required fee is ${CREATION_FEE} ${config.CURRENCY}.`;
 
       broadcastToUser(username, 'create-market', JSON.stringify({ success: false, message }));
 
@@ -88,11 +90,11 @@ module.exports = async (trx) => {
       template: value.template,
       data: value,
       creation_fee: {
-        amount: receivedAmount,
+        amount: CREATION_FEE,
         symbol: config.CURRENCY,
       },
       share_price: {
-        amount: config.SHARE_PRICE,
+        amount: SHARE_PRICE,
         symbol: config.CURRENCY,
       },
       liquidity: {
