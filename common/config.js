@@ -11,7 +11,7 @@ module.exports = {
   WS_PORT: process.env.WS_PORT || 5000,
   JWT_SECRET: process.env.JWT_SECRET,
   CHAIN_NAME: 'hive',
-  APP_ID: 'dublup-io',
+  APP_ID: 'dublup-io-dev',
   SIDECHAIN_ID: 'ssc-testnet-reaz',
   SIDECHAIN_RPC: 'https://packmanager.dtools.dev/rpc', // 'https://api.hive-engine.com/rpc',
   NFT_ISSUE_FEE_SYMBOL: 'BEE',
@@ -29,6 +29,7 @@ module.exports = {
   REFRESH_TOKEN_EXPIRATION: '90d', // 90 days
   NODES: ['https://api.hive.blog', 'https://api.pharesim.me', 'https://api.hivekings.com', 'https://rpc.ecency.com', 'https://rpc.ausbit.dev'],
   ADMINS: ['reazuliqbal', 'aggroed', 'clayboyn'],
+  CREATION_FEE_ACCOUNT: 'null',
   REPORTING_DURATION: 1, // in days
   CORRECT_REPORTING_REP_REWARD: 1,
   INCORRECT_REPORTING_REP_REWARD: -10,

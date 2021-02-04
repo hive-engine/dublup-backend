@@ -16,7 +16,9 @@ const blockProcessor = async (data, scClient, state) => {
 
     if (trx.contract === 'tokens'
       && trx.action === 'transfer'
-      && (trx.payload.to === config.ACCOUNT || trx.sender === config.ACCOUNT)) {
+      && (trx.payload.to === config.ACCOUNT
+        || trx.sender === config.ACCOUNT
+        || trx.payload.to === config.CREATION_FEE_ACCOUNT)) {
       await tokensTransfer(trx, scClient);
     }
   }

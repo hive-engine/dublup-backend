@@ -14,6 +14,7 @@ module.exports = [{
       symbol: config.NFT_SYMBOL,
       market_fee: config.MARKET_FEE,
       creation_fee: CREATION_FEE,
+      creation_fee_account: config.CREATION_FEE_ACCOUNT,
       share_price: SHARE_PRICE,
       sidechain_id: config.SIDECHAIN_ID,
       sidechain_rpc: config.SIDECHAIN_RPC,

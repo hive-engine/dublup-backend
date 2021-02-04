@@ -12,10 +12,14 @@ module.exports = async (trx) => {
     chain_block: chainBock,
     sidechain_block: scBlock,
     timestamp,
-    payload: { quantity, symbol, memo },
+    payload: {
+      quantity, symbol, memo, to,
+    },
   } = trx;
 
   try {
+    if (to !== config.CREATION_FEE_ACCOUNT) return;
+
     const receivedAmount = Number(quantity);
 
     const { creation_fee: CREATION_FEE, share_price: SHARE_PRICE } = await Config.findOne({});
