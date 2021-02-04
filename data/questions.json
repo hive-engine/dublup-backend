@@ -68,9 +68,9 @@
     },
     {
       "id": "sports-americanfootball-binary-5",
-      "question": "NFL: Will the [Team] win SuperBowl [Numeral]?",
-      "example": "NFL: Will the NY Giants win Superbowl LIV (54th)",
-      "replaceable": "NFL: Will the [team] win SuperBowl [numeral]?"
+      "question": "NFL: Will the [Team] win Big Game [Numeral]?",
+      "example": "NFL: Will the NY Giants win Big Game LIV (54th)",
+      "replaceable": "NFL: Will the [team] win Big Game [numeral]?"
     },
     {
       "id": "sports-americanfootball-binary-6",
