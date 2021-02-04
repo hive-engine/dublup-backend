@@ -29,7 +29,7 @@ module.exports = async (trx) => {
 
       broadcastToUser(username, 'create-market', JSON.stringify({ success: false, message }));
 
-      return refundToken(username, quantity, symbol, message);
+      return refundToken(username, quantity, symbol, message, config.CREATION_FEE_ACCOUNT);
     }
 
     if (!memo || !memo.payload.template) {
@@ -37,7 +37,7 @@ module.exports = async (trx) => {
 
       broadcastToUser(username, 'create-market', JSON.stringify({ success: false, message }));
 
-      return refundToken(username, quantity, symbol, message);
+      return refundToken(username, quantity, symbol, message, config.CREATION_FEE_ACCOUNT);
     }
 
     const schema = schemas[memo.payload.template];
@@ -47,7 +47,7 @@ module.exports = async (trx) => {
 
       broadcastToUser(username, 'create-market', JSON.stringify({ success: false, message }));
 
-      return refundToken(username, quantity, symbol, message);
+      return refundToken(username, quantity, symbol, message, config.CREATION_FEE_ACCOUNT);
     }
 
     const { error, value } = schema.validate(memo.payload, {
@@ -60,7 +60,7 @@ module.exports = async (trx) => {
 
       broadcastToUser(username, 'create-market', JSON.stringify({ success: false, message }));
 
-      return refundToken(username, quantity, symbol, message);
+      return refundToken(username, quantity, symbol, message, config.CREATION_FEE_ACCOUNT);
     }
 
     let question = generateQuestion(value);
@@ -74,7 +74,7 @@ module.exports = async (trx) => {
 
       broadcastToUser(username, 'create-market', JSON.stringify({ success: false, message }));
 
-      return refundToken(username, quantity, symbol, message);
+      return refundToken(username, quantity, symbol, message, config.CREATION_FEE_ACCOUNT);
     }
 
     let possibelOutcomes = {};

@@ -131,7 +131,9 @@ const parseJSON = (json) => {
   return null;
 };
 
-const refundToken = async (to, quantity, symbol, memo = '') => {
+const refundToken = async (to, quantity, symbol, memo = '', sender) => {
+  const account = sender || config.ACCOUNT;
+
   const json = {
     contractName: 'tokens',
     contractAction: 'transfer',
@@ -144,7 +146,7 @@ const refundToken = async (to, quantity, symbol, memo = '') => {
   };
 
   await hiveClient.broadcast.json({
-    required_auths: [config.ACCOUNT],
+    required_auths: [account],
     required_posting_auths: [],
     id: config.SIDECHAIN_ID,
     json: JSON.stringify(json),
