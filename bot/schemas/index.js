@@ -579,6 +579,8 @@ module.exports = {
     percentage: Joi.number().min(0.001).required(),
     closeDate: Joi.date().greater('now').max(Joi.ref('expiryDate')).required(),
     expiryDate: Joi.date().greater('now').required(),
+    outcomes: Joi.array().items(Joi.string().required(), Joi.string().required())
+      .unique().required(),
   }).custom((value, helpers) => {
     if (lastDayOfMonth(new Date(`${value.month} 1, ${value.year}`)).getTime() !== value.closeDate.getTime()) {
       return helpers.error('any.invalid');
