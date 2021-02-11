@@ -40,7 +40,7 @@ module.exports = {
     pair: Joi.string().valid('BTC-USD', 'BTC-EUR', 'BTC-USDT', 'ETH-USD', 'ETH-EUR', 'ETH-USDT', 'HIVE-USD', 'HIVE-USDT').required(),
     price: Joi.number().min(0.001).required(),
     startDate: Joi.date().greater('now').required(),
-    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
+    closeDate: Joi.date().greater('now').max(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('startDate', { adjust: (v) => addDays(new Date(v), 1) })).required().messages({ 'any.only': '"expiryDate" must be 1 day after the "startDate"' }),
     source: Joi.alternatives().conditional('pair', {
       switch: [
@@ -64,7 +64,7 @@ module.exports = {
     price: Joi.number().min(0.001).required(),
     startDate: Joi.date().greater('now').required(),
     endDate: Joi.date().min(Joi.ref('startDate')).required(),
-    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
+    closeDate: Joi.date().greater('now').max(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('endDate', { adjust: (v) => addDays(new Date(v), 1) })).required().messages({ 'any.only': '"expiryDate" must be 1 day after the "endDate"' }),
     source: Joi.alternatives().conditional('pair', {
       switch: [
@@ -87,7 +87,7 @@ module.exports = {
     pair: Joi.string().valid('NASDAQ-GOOG', 'NASDAQ-AAPL', 'NASDAQ-TSLA').required(),
     price: Joi.number().min(0.001).required(),
     startDate: Joi.date().greater('now').required(),
-    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
+    closeDate: Joi.date().greater('now').max(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('startDate', { adjust: (v) => addDays(new Date(v), 1) })).required().messages({ 'any.only': '"expiryDate" must be 1 day after the "startDate"' }),
     source: Joi.alternatives().conditional('pair', {
       switch: [
@@ -104,7 +104,7 @@ module.exports = {
     price: Joi.number().min(0.001).required(),
     startDate: Joi.date().greater('now').required(),
     endDate: Joi.date().min(Joi.ref('startDate')).required(),
-    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
+    closeDate: Joi.date().greater('now').max(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('endDate', { adjust: (v) => addDays(new Date(v), 1) })).required().messages({ 'any.only': '"expiryDate" must be 1 day after the "endDate"' }),
     source: Joi.alternatives().conditional('pair', {
       switch: [
@@ -120,7 +120,7 @@ module.exports = {
     pair: Joi.string().valid('XAU-USD', 'XAG-USD').required(),
     price: Joi.number().min(0.001).required(),
     startDate: Joi.date().greater('now').required(),
-    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
+    closeDate: Joi.date().greater('now').max(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('startDate', { adjust: (v) => addDays(new Date(v), 1) })).required().messages({ 'any.only': '"expiryDate" must be 1 day after the "startDate"' }),
     source: Joi.alternatives().conditional('pair', {
       switch: [
@@ -136,7 +136,7 @@ module.exports = {
     price: Joi.number().min(0.001).required(),
     startDate: Joi.date().greater('now').required(),
     endDate: Joi.date().min(Joi.ref('startDate')).required(),
-    closeDate: Joi.date().valid(Joi.ref('startDate')).required(),
+    closeDate: Joi.date().greater('now').max(Joi.ref('startDate')).required(),
     expiryDate: Joi.date().valid(Joi.ref('endDate', { adjust: (v) => addDays(new Date(v), 1) })).required().messages({ 'any.only': '"expiryDate" must be 1 day after the "endDate"' }),
     source: Joi.alternatives().conditional('pair', {
       switch: [
