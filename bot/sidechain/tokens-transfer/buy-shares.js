@@ -105,7 +105,7 @@ module.exports = async (trx) => {
         await issueMultiple(issueChunks[i]);
         await sleep(2 * 1000);
       } catch (e) {
-        logger.error(`Failed to bradcast NFT issuance. Message: ${e.message}  User: ${username} MKT: ${market._id} TX: ${trxId}`, issueChunks[i]);
+        logger.error(`Failed to broadcast NFT issuance. Message: ${e.message}  User: ${username} MKT: ${market._id} TX: ${trxId}`, issueChunks[i]);
       }
     }
 
