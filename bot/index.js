@@ -1,3 +1,4 @@
+const nodeCleanup = require('node-cleanup');
 const Sidechain = require('../common/Sidechain');
 const logger = require('../common/logger');
 const config = require('../common/config');
@@ -5,6 +6,7 @@ const DB = require('../common/db');
 const Stream = require('./Stream');
 const State = require('../common/state');
 const operations = require('./operations');
+const { sleep } = require('./helpers');
 const { getClient, BlockchainMode } = require('../common/chain');
 const { blockProcessor } = require('./sidechain');
 const { settleReportedMarkets, updateMarketsStatus, updateOracleStakes } = require('./modules');
@@ -64,14 +66,22 @@ const main = async () => {
 
 main();
 
-process.on('SIGINT', async () => {
+const shutDownSequence = async (exitCode, signal) => {
   SidechainClient.stopStream();
   hiveStream.stop();
 
-  setTimeout(async () => {
-    await state.destroy();
-    await DB.close();
+  await sleep(30 * 1000);
 
-    process.exit(0);
-  }, 30 * 1000);
+  await state.destroy();
+  await DB.close();
+
+  process.kill(process.pid, signal);
+};
+
+nodeCleanup((exitCode, signal) => {
+  shutDownSequence(exitCode, signal);
+
+  nodeCleanup.uninstall();
+
+  return false;
 });

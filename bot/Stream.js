@@ -51,8 +51,8 @@ class Stream extends EventEmiter {
     this.start();
   }
 
-  stop(error = null) {
-    this.stream.destroy(error);
+  stop() {
+    this.stream.end();
   }
 }
 

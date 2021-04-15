@@ -19,7 +19,7 @@ class Sidechain {
 
     this.PROCESSOR = blockProcessor;
 
-    this.shouldStream = false;
+    this.shouldStream = true;
   }
 
   static async send(rpc, request) {
@@ -122,7 +122,7 @@ class Sidechain {
   }
 
   async streamBlocks(startBlock, endBlock = null, ts = 1000, ...args) {
-    if (this.shouldStream) return;
+    if (!this.shouldStream) return;
 
     try {
       const res = await this.getBlockInfo(startBlock);
@@ -147,7 +147,7 @@ class Sidechain {
   }
 
   stopStream() {
-    this.shouldStream = true;
+    this.shouldStream = false;
   }
 
   getTransactionInfo(txid) {
