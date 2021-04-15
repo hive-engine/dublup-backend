@@ -1,5 +1,6 @@
 const marketRoutes = require('./markets');
 const settingsRoutes = require('./settings');
+const stateRoutes = require('./state');
 const transactionsRoutes = require('./transactions');
 const usersRoutes = require('./users');
 
@@ -30,5 +31,6 @@ module.exports = [
   ...marketRoutes,
   ...settingsRoutes,
   ...transactionsRoutes,
+  ...stateRoutes,
   ...usersRoutes,
 ];
