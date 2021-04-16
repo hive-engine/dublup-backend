@@ -24,8 +24,8 @@ module.exports = async (client, data) => {
           { upsert: true, new: true, setDefaultsOnInsert: true },
         );
 
-        if (user && !user.oracle && !user.banned) {
-          user.oracle = true;
+        if (user && !user.oracle.registered && !user.banned) {
+          user.oracle.registered = true;
           user.stake = stake;
 
           await user.save();

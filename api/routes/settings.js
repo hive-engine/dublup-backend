@@ -24,6 +24,7 @@ module.exports = [{
       public_key: config.PUBLIC_DECRYPTION_KEY,
       correct_reporting_reward: config.CORRECT_REPORTING_REP_REWARD,
       incorrect_reporting_penalty: config.INCORRECT_REPORTING_REP_REWARD,
+      max_consecutive_misses: config.MAX_CONSECUTIVE_MISSES,
     };
   },
 }];

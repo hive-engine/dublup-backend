@@ -94,7 +94,12 @@ const randomWeightedSelection = (items, n) => {
 
 const selectRandomOracles = async () => {
   const oracleUsers = await User.find({
-    oracle: true, banned: false, weight: { $gt: 0 }, reputation: { $gte: 0 },
+    'oracle.registered': true,
+    'oracle.active': true,
+    'oracle.consecutive_misses': { $lt: 3 },
+    banned: false,
+    weight: { $gt: 0 },
+    reputation: { $gte: 0 },
   });
 
   const oracleWeights = oracleUsers.reduce((acc, cur) => {
@@ -291,21 +296,40 @@ const distributeCreatorReward = async (creator, payable, marketId) => {
   }
 };
 
-const updateOracleReputation = async (reportedOutcomes, winningOutcome) => {
+const updateOracleReputation = async (market, winningOutcome) => {
   try {
-    const submittedOutcomes = Object.entries(reportedOutcomes);
+    const submittedOutcomes = new Map(Object.entries(market.reported_outcomes));
 
-    const updateOps = submittedOutcomes.reduce((acc, cur) => {
-      acc.push({
-        updateOne: {
-          filter: { username: cur[0] },
-          update: {
-            $inc: {
-              reputation: (cur[1] === winningOutcome)
-                ? config.CORRECT_REPORTING_REP_REWARD
-                : config.INCORRECT_REPORTING_REP_REWARD,
+    const updateOps = market.oracles.reduce((acc, cur) => {
+      const outcome = submittedOutcomes.get(cur);
+
+      let updateQuery = {};
+
+      if (outcome) {
+        updateQuery.$inc = {
+          reputation: (outcome === winningOutcome)
+            ? config.CORRECT_REPORTING_REP_REWARD
+            : config.INCORRECT_REPORTING_REP_REWARD,
+        };
+      } else {
+        updateQuery = [{
+          $set: {
+            'oracle.consecutive_misses': { $add: ['$oracle.consecutive_misses', 1] },
+            'oracle.active': {
+              $cond: [
+                { $eq: ['$oracle.active', true] },
+                { $not: [{ $gte: ['$oracle.consecutive_misses', config.MAX_CONSECUTIVE_MISSES - 1] }] },
+                '$oracle.active',
+              ],
             },
           },
+        }];
+      }
+
+      acc.push({
+        updateOne: {
+          filter: { username: cur },
+          update: updateQuery,
         },
       });
 
@@ -420,7 +444,7 @@ const settleReportedMarkets = async () => {
 
         await market.save();
 
-        await updateOracleReputation(market.reported_outcomes, winningOutcome);
+        await updateOracleReputation(market, winningOutcome);
       }
     }
   } catch (e) {
@@ -434,7 +458,7 @@ const updateOracleStakes = async () => {
   const timeout = msToMidnight();
 
   try {
-    let oracles = await User.find({ oracle: true }).lean();
+    let oracles = await User.find({ 'oracle.registered': true }).lean();
 
     oracles = oracles.map((o) => o.username);
 
@@ -456,7 +480,7 @@ const updateOracleStakes = async () => {
           filter: { username: cur.account },
           update: {
             stake: cur.stake,
-            oracle: (cur.stake >= config.ORACLE_STAKE_REQUIREMENT),
+            'oracle.registered': (cur.stake >= config.ORACLE_STAKE_REQUIREMENT),
             weight: cur.stake / totalStake,
           },
         },

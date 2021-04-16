@@ -18,8 +18,19 @@ const UserSchema = new mongoose.Schema({
     max: 1,
   },
   oracle: {
-    type: Boolean,
-    default: false,
+    registered: {
+      type: Boolean,
+      default: false,
+    },
+    active: {
+      type: Boolean,
+      default: true,
+    },
+    consecutive_misses: {
+      type: Number,
+      min: 0,
+      default: 0,
+    },
   },
   reputation: {
     type: Number,

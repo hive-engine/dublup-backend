@@ -10,9 +10,9 @@ module.exports = async (client, data) => {
 
   if (username !== '' || (data.json && data.json.payload)) {
     try {
-      const user = await User.findOne({ username, banned: false }).lean();
+      const user = await User.findOne({ username, banned: false });
 
-      if (user && user.oracle && user.reputation >= 0) { // Checking user is an Oracle
+      if (user && user.oracle.registered && user.reputation >= 0) { // Checking user is an Oracle
         let decodedPayload = memo.decode(config.DECRYPTION_KEY, data.json.payload).replace(/^#/, '');
 
         decodedPayload = parseJSON(decodedPayload);
@@ -56,6 +56,15 @@ module.exports = async (client, data) => {
                 }
 
                 broadcastToUser(username, 'report-outcome', JSON.stringify({ success: true }));
+
+                if (user.oracle.consecutive_misses > 0) {
+                  try {
+                    user.oracle.consecutive_misses = 0;
+                    await user.save();
+                  } catch {
+                    //
+                  }
+                }
               }
             }
           } else {
