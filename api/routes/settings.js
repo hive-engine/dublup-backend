@@ -28,6 +28,7 @@ module.exports = [{
       creator_reward_share: config.MARKET_CREATOR_SHARE,
       oracle_reward_share: config.ORACLES_SHARE,
       participants_reward_share: 1 - (config.MARKET_CREATOR_SHARE + config.ORACLES_SHARE),
+      marketpools_pair: config.MARKETPOOLS_PAIR,
     };
   },
 }];
