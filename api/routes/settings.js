@@ -25,6 +25,9 @@ module.exports = [{
       correct_reporting_reward: config.CORRECT_REPORTING_REP_REWARD,
       incorrect_reporting_penalty: config.INCORRECT_REPORTING_REP_REWARD,
       max_consecutive_misses: config.MAX_CONSECUTIVE_MISSES,
+      creator_reward_share: config.MARKET_CREATOR_SHARE,
+      oracle_reward_share: config.ORACLES_SHARE,
+      participants_reward_share: 1 - (config.MARKET_CREATOR_SHARE + config.ORACLES_SHARE),
     };
   },
 }];
