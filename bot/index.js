@@ -7,7 +7,7 @@ const Stream = require('./Stream');
 const State = require('../common/state');
 const operations = require('./operations');
 const { sleep } = require('./helpers');
-const { getClient, BlockchainMode } = require('../common/chain');
+const { getClient } = require('../common/chain');
 const { blockProcessor } = require('./sidechain');
 const { settleReportedMarkets, updateMarketsStatus, updateOracleStakes } = require('./modules');
 
@@ -24,14 +24,9 @@ const main = async () => {
   const lastHiveBlock = await state.loadState('hive');
   const lastHEBlock = await state.loadState('hive-engine');
 
-  const streamOptions = {
-    from: lastHiveBlock === 0 ? undefined : lastHiveBlock + 1,
-    mode: BlockchainMode.Latest,
-  };
+  hiveStream = new Stream(config.NODES);
 
-  hiveStream = new Stream(client, streamOptions);
-
-  hiveStream.start();
+  hiveStream.start(lastHiveBlock === 0 ? undefined : lastHiveBlock + 1);
 
   hiveStream.on('custom_json', (data) => operations.customJson(client, data));
 
