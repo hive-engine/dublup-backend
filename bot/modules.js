@@ -1,4 +1,5 @@
 /* eslint-disable no-bitwise */
+const axios = require('axios').default;
 const { differenceInDays } = require('date-fns');
 const {
   arrayChunk,
@@ -23,6 +24,39 @@ const insertNotification = async (account, type, data) => {
     });
   } catch (e) {
     logger.error(`Failed to insert notification. Message: ${e.message} User: ${account} Type: ${type}`, { data });
+  }
+};
+
+const sendToDiscord = async (title, marketId, oracles) => {
+  const message = {
+    username: 'dublup.io',
+    avatar_url: 'https://i.imgur.com/ZemODmj.png',
+    content: '',
+    embeds: [
+      {
+        title,
+        color: 0,
+        description: `Selected oracles are: ${oracles.join(', ')}`,
+        timestamp: new Date().toISOString(),
+        url: `https://dublup.io/market/${marketId}`,
+        author: {
+          name: 'A new market is available for oracle reporting.',
+        },
+        image: {},
+        thumbnail: {},
+        footer: {
+          text: 'dublup.io',
+          icon_url: 'https://i.imgur.com/ZemODmj.png',
+        },
+        fields: [],
+      },
+    ],
+  };
+
+  try {
+    await axios.post(config.WEBHOOK_URL, message);
+  } catch (e) {
+    logger.error(`Failed to send Discord notification. Message: ${e.message}`);
   }
 };
 
@@ -133,6 +167,8 @@ const updateMarketsStatus = async () => {
         market.oracles.forEach((o) => notifications.push(insertNotification(o, 'oracle', { market: market._id })));
 
         await Promise.all(notifications);
+
+        await sendToDiscord(market.question, market._id, market.oracles);
       } else if (market.status === 3
         && market.reported_outcomes
         && Object.keys(market.reported_outcomes).length >= config.ORACLE_REQUIRED
