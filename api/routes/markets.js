@@ -40,12 +40,6 @@ module.exports = [
         match = { ...match, $or: [{ status: 1 }, { status: 2 }] };
       }
 
-      if (oracle && request.auth
-        && request.auth.credentials
-        && request.auth.credentials.sub === oracle) {
-        match = { ...match, oracles: oracle, $expr: { $lte: [`$reported_outcomes.${oracle}`, null] } };
-      }
-
       const sort = {};
 
       if (sortBy === 'liquidity') sort['liquidity.amount'] = -1;
@@ -60,10 +54,27 @@ module.exports = [
       const query = [{
         $match: match,
       },
-      {
+      ];
+
+      if (oracle && request.auth
+        && request.auth.credentials
+        && request.auth.credentials.sub === oracle) {
+        query.push(...[
+          {
+            $addFields: {
+              reported_outcomes_array: { $objectToArray: '$reported_outcomes' },
+            },
+          }, {
+            $match: {
+              oracles: oracle, reported_outcomes_array: { $not: { $elemMatch: { k: oracle } } },
+            },
+          },
+        ]);
+      }
+
+      query.push(...[{
         $sort: sort,
-      },
-      {
+      }, {
         $facet: {
           metadata: [{ $count: 'total' }],
           results: [{ $skip: skip }, { $limit: limit }, {
@@ -87,13 +98,12 @@ module.exports = [
             },
           }],
         },
-      },
-      {
+      }, {
         $project: {
           results: 1,
           total: { $arrayElemAt: ['$metadata.total', 0] },
         },
-      }];
+      }]);
 
       const [aggregate] = await Market.aggregate(query);
 
